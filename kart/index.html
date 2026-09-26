@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>马里奥赛车 8 豪华版 (Mario Kart 8 Deluxe - 双人分屏对决)</title>
+  <link rel="stylesheet" href="/kart/src/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Split Screen Side-by-Side Container (两边分裂形状，防止互相遮挡视线) -->
+  <div id="split-screen-container">
+    <!-- Left Screen: Player 1 (Mario) -->
+    <div class="split-half left-half" id="half-p1">
+      <canvas id="canvas-p1"></canvas>
+      <div class="player-hud">
+        <div class="player-badge p1-badge">1P · MARIO (马里奥)</div>
+        <div class="item-slot-box">
+          <span class="item-slot-label">道具 [SPACE]</span>
+          <div id="p1-item-icon" class="item-slot-icon">--</div>
+        </div>
+        <div class="lap-counter">圈数: <span id="p1-lap">1</span> / 3</div>
+        <div class="speedometer"><span id="p1-speed">0</span> KM/H</div>
+        <div class="key-hints">W 加速 | S 刹车 | A/D 转向 | 空格 道具/漂移</div>
+      </div>
+    </div>
+
+    <!-- Dividing Neon Border Line -->
+    <div class="split-divider">
+      <div class="divider-glow"></div>
+      <div class="trophy-badge">🏆 MK8D</div>
+    </div>
+
+    <!-- Right Screen: Player 2 (Luigi / Bowser) -->
+    <div class="split-half right-half" id="half-p2">
+      <canvas id="canvas-p2"></canvas>
+      <div class="player-hud">
+        <div class="player-badge p2-badge">2P · LUIGI (路易吉)</div>
+        <div class="item-slot-box">
+          <span class="item-slot-label">道具 [ENTER]</span>
+          <div id="p2-item-icon" class="item-slot-icon">--</div>
+        </div>
+        <div class="lap-counter">圈数: <span id="p2-lap">1</span> / 3</div>
+        <div class="speedometer"><span id="p2-speed">0</span> KM/H</div>
+        <div class="key-hints">↑ 加速 | ↓ 刹车 | ←/→ 转向 | 回车 道具/漂移</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Action Bar -->
+  <header id="kart-header">
+    <div class="brand-title">🏁 MARIO KART 8 DELUXE · 双人分屏竞技场</div>
+    <div class="header-actions">
+      <button id="btn-sound" class="btn-action">🔊 声音</button>
+      <button id="btn-restart" class="btn-action">🔄 重新发车</button>
+      <a href="../" class="btn-action exit-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+    </div>
+  </header>
+
+  <!-- Race Winner Modal -->
+  <div id="winner-modal" class="winner-overlay hidden">
+    <div class="winner-box">
+      <div class="winner-trophy">🏆</div>
+      <h1 id="winner-title" class="winner-text">1P MARIO 获得胜利！</h1>
+      <p id="winner-sub" class="winner-sub">恭喜解锁极速冠军奖杯成就！</p>
+      <button onclick="location.reload()" class="btn-play-again">再赛一局</button>
+    </div>
+  </div>
+
+  <script type="module" src="/kart/src/main.js"></script>
+</body>
+</html>

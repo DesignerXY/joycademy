@@ -1,0 +1,12 @@
+name = "kids-arcade-learning-hub"
+compatibility_date = "2024-09-23"
+
+# Cloudflare Workers 静态资源配置 (Static Assets)
+# 支持执行 `npx wrangler deploy` 或 `npm run deploy:cf` 一键全球边缘极速部署
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+
+# 如使用 Cloudflare Pages (连接 Git 仓库自动构建):
+# - 构建命令 (Build command): npm run build
+# - 构建输出目录 (Output directory): dist

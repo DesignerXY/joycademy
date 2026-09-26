@@ -1,0 +1,337 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #060913;
+}
+
+#odyssey-canvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+/* Top HUD */
+#odyssey-hud {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.hud-left {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.moon-counter, .coin-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.moon-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px #fde047);
+}
+
+.coin-icon {
+  font-size: 18px;
+}
+
+#moon-count {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fef08a;
+}
+
+.moon-target {
+  font-size: 14px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+#coin-count {
+  font-size: 20px;
+  font-weight: 800;
+  color: #facc15;
+}
+
+/* Kingdom Banner in Center */
+.hud-center {
+  text-align: center;
+}
+
+.kingdom-banner {
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom: 2px solid #ef4444;
+  padding: 6px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.kingdom-tag {
+  font-size: 11px;
+  color: #ef4444;
+  font-weight: 800;
+  letter-spacing: 2px;
+  display: block;
+}
+
+.kingdom-title {
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Health Gauge */
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.health-gauge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  border: 3px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.6);
+}
+
+.life-text {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.hud-btn {
+  background: rgba(30, 41, 59, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.hud-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Controls Panel */
+#controls-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.control-key {
+  font-size: 12px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* Capture Banner */
+.capture-banner {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #d82800, #fcbc00);
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(216, 40, 0, 0.5);
+  z-index: 30;
+  animation: pulseCapture 1.5s infinite alternate;
+}
+
+@keyframes pulseCapture {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.05); }
+}
+
+/* Moon Got Modal */
+.moon-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.25) 0%, rgba(0, 0, 0, 0.8) 75%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.moon-modal-content {
+  text-align: center;
+  animation: zoomPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes zoomPop {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.moon-big-icon {
+  font-size: 80px;
+  filter: drop-shadow(0 0 30px #facc15);
+  margin-bottom: 12px;
+}
+
+.moon-got-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: #fef08a;
+  text-shadow: 0 0 20px rgba(253, 224, 71, 0.8);
+  margin-bottom: 8px;
+}
+
+.moon-sub {
+  font-size: 18px;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.moon-celebrate {
+  display: inline-block;
+  background: #d82800;
+  color: #ffffff;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Start Overlay */
+.odyssey-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 9, 19, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.odyssey-menu {
+  text-align: center;
+  max-width: 520px;
+  padding: 36px;
+}
+
+.odyssey-logo-box {
+  margin-bottom: 20px;
+}
+
+.logo-super {
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 6px;
+}
+
+.logo-mario {
+  font-size: 64px;
+  color: #d82800;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 4px 4px 0 #ffffff;
+}
+
+.logo-odyssey {
+  font-size: 28px;
+  color: #facc15;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.odyssey-intro {
+  font-size: 15px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.start-odyssey-btn {
+  background: linear-gradient(135deg, #d82800 0%, #b82400 100%);
+  border: none;
+  color: #ffffff;
+  padding: 16px 36px;
+  font-size: 18px;
+  font-weight: 800;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(216, 40, 0, 0.5);
+  transition: all 0.2s;
+}
+
+.start-odyssey-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(216, 40, 0, 0.7);
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>少儿智趣成长与游戏中心 · 智趣学堂 & 经典街机 & 3D体素沙盒</title>
+  <meta name="description" content="面向青少年的沉浸式全学科游戏化闯关与经典3D街机中心：涵盖人教版小学数学17单元知识点具象工坊、3D超级马里奥奥德赛、双人分屏马车8、经典马里奥与3D我的世界。">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.4);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.35);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
+      --cyan: #06b6d4;
+      --red: #ef4444;
+      --bg: #090d16;
+      --surface: rgba(19, 26, 42, 0.72);
+      --surface-border: rgba(255, 255, 255, 0.12);
+      --surface-hover: rgba(28, 38, 62, 0.85);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', 'Noto Sans SC', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.18) 0px, transparent 45%),
+        radial-gradient(at 90% 15%, rgba(245, 158, 11, 0.15) 0px, transparent 40%),
+        radial-gradient(at 50% 90%, rgba(16, 185, 129, 0.14) 0px, transparent 50%),
+        radial-gradient(at 80% 80%, rgba(216, 40, 0, 0.15) 0px, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 36px 20px 60px;
+    }
+
+    .container {
+      max-width: 1260px;
+      width: 100%;
+    }
+
+    /* Header & Hero */
+    header.hero-section {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .hero-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(245, 158, 11, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fed7aa;
+      margin-bottom: 16px;
+      letter-spacing: 0.8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    h1.hero-title {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #fde047 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    p.hero-sub {
+      font-size: 17px;
+      color: var(--text-sub);
+      max-width: 760px;
+      margin: 0 auto 28px;
+      line-height: 1.6;
+    }
+
+    /* Stats Overview Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto 36px;
+    }
+
+    .stat-pill {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 12px 18px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+      transition: all 0.25s ease;
+    }
+
+    .stat-pill:hover {
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .stat-icon {
+      font-size: 24px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .stat-text .stat-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-text .stat-desc {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* Category Filter */
+    .filter-tabs-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .filter-tabs {
+      display: inline-flex;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--surface-border);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 4px;
+      backdrop-filter: blur(12px);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 8px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      color: #ffffff;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    }
+
+    /* Learning Zone Featured Big Banner */
+    .featured-zone {
+      margin-bottom: 32px;
+    }
+
+    .big-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.75) 0%, rgba(19, 26, 42, 0.85) 100%);
+      border: 1.5px solid rgba(139, 92, 246, 0.4);
+      border-radius: 28px;
+      padding: 36px 36px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .big-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #ec4899, #8b5cf6, #f59e0b);
+    }
+
+    .big-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(167, 139, 250, 0.7);
+      box-shadow: 0 28px 60px rgba(124, 58, 237, 0.25);
+    }
+
+    .big-card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fde68a;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .big-card-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .big-card-desc {
+      font-size: 15px;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .learning-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .chip-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .big-card-side {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .side-feature-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .side-feature-icon {
+      font-size: 22px;
+      background: rgba(255, 255, 255, 0.08);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .side-feature-info h4 {
+      font-size: 14px;
+      color: #f8fafc;
+      margin-bottom: 3px;
+    }
+
+    .side-feature-info p {
+      font-size: 12px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .btn-launch-learning {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(234, 88, 12, 0.45);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .btn-launch-learning:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+      box-shadow: 0 12px 32px rgba(234, 88, 12, 0.65);
+      transform: translateY(-2px);
+    }
+
+    /* Section Subhead */
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+
+    .section-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-badge-count {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 999px;
+      color: #94a3b8;
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+    }
+
+    .game-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 24px;
+      padding: 30px 24px;
+      text-align: left;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: #94a3b8;
+      transition: all 0.3s ease;
+    }
+
+    .game-card.odyssey::before { background: linear-gradient(90deg, #facc15, #d82800); }
+    .game-card.kart::before { background: linear-gradient(90deg, #0284c7, #38bdf8); }
+    .game-card.mario::before { background: linear-gradient(90deg, #d82800, #fcbc00); }
+    .game-card.minecraft::before { background: linear-gradient(90deg, #15803d, #22c55e); }
+
+    .game-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .odyssey .card-badge { background: rgba(250, 204, 21, 0.2); color: #fde047; }
+    .kart .card-badge { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; }
+    .mario .card-badge { background: rgba(216, 40, 0, 0.25); color: #ff7755; }
+    .minecraft .card-badge { background: rgba(34, 197, 94, 0.25); color: #86efac; }
+
+    .card-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 15px;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.45;
+    }
+
+    .odyssey .card-title { color: #fde047; }
+    .kart .card-title { color: #38bdf8; }
+    .mario .card-title { color: #fcbc00; }
+    .minecraft .card-title { color: #86efac; }
+
+    .card-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .features-list {
+      list-style: none;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .features-list li {
+      font-size: 13px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .play-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .odyssey .play-btn {
+      background: linear-gradient(135deg, #d82800 0%, #b82400 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(216, 40, 0, 0.4);
+    }
+    .odyssey .play-btn:hover {
+      background: linear-gradient(135deg, #f03200 0%, #d82800 100%);
+      box-shadow: 0 8px 24px rgba(216, 40, 0, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .kart .play-btn {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+    .kart .play-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .mario .play-btn {
+      background: linear-gradient(135deg, #d82800 0%, #b82400 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(216, 40, 0, 0.4);
+    }
+    .mario .play-btn:hover {
+      background: linear-gradient(135deg, #f03200 0%, #d82800 100%);
+      box-shadow: 0 8px 24px rgba(216, 40, 0, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .minecraft .play-btn {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(22, 163, 74, 0.4);
+    }
+    .minecraft .play-btn:hover {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      box-shadow: 0 8px 24px rgba(22, 163, 74, 0.7);
+      transform: translateY(-2px);
+    }
+
+    /* Footer & Deployment Helper */
+    footer.app-footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 13px;
+      color: #64748b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .deploy-badge-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 6px 16px;
+      border-radius: 999px;
+      color: #cbd5e1;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .deploy-badge-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+    }
+
+    /* Deployment Modal */
+    .deploy-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .deploy-modal-overlay.active {
+      display: flex;
+    }
+
+    .deploy-modal-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      max-width: 640px;
+      width: 100%;
+      padding: 30px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      color: #ffffff;
+    }
+
+    .deploy-modal-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .deploy-method-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .deploy-method-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 18px;
+    }
+
+    .deploy-method-box h4 {
+      font-size: 14px;
+      color: #f1f5f9;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .deploy-method-box p {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .deploy-method-box code {
+      display: block;
+      background: #020617;
+      padding: 6px 10px;
+      border-radius: 8px;
+      color: #38bdf8;
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 6px;
+      user-select: all;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .big-card {
+        grid-template-columns: 1fr;
+        padding: 28px 20px;
+      }
+      h1.hero-title {
+        font-size: 32px;
+      }
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      body {
+        padding: 24px 14px 48px;
+      }
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 26px;
+      }
+      .filter-tabs {
+        width: 100%;
+        justify-content: center;
+      }
+      .tab-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero Header -->
+    <header class="hero-section">
+      <div class="hero-top-badge">
+        <span>🌟 启发思考 · 具象动手 · 极速畅玩</span>
+      </div>
+      <h1 class="hero-title">少儿智趣成长与游戏中心</h1>
+      <p class="hero-sub">小学生全学科游戏化互动闯关与经典 3D 街机沙盒乐园，纯前端高性能驱动，无需繁琐安装，随时随地秒开！</p>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-pill">
+          <div class="stat-icon">📚</div>
+          <div class="stat-text">
+            <div class="stat-num">17 个全册单元</div>
+            <div class="stat-desc">人教数学核心知识点全覆盖</div>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-icon">⚙️</div>
+          <div class="stat-text">
+            <div class="stat-num">5+ 具象工坊</div>
+            <div class="stat-desc">表盘/披萨/周长网格动手教具</div>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-icon">🎮</div>
+          <div class="stat-text">
+            <div class="stat-num">4 款王牌街机</div>
+            <div class="stat-desc">3D奥德赛/双人马车/体素MC</div>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-icon">🚀</div>
+          <div class="stat-text">
+            <div class="stat-num">100% 纯前端</div>
+            <div class="stat-desc">支持离线、GitHub与Worker</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="filter-tabs-wrapper">
+        <div class="filter-tabs" role="tablist">
+          <button class="tab-btn active" data-filter="all">🌟 全部体验 (5)</button>
+          <button class="tab-btn" data-filter="learning">📚 智趣学堂 (1)</button>
+          <button class="tab-btn" data-filter="arcade">🎮 经典街机 & 3D沙盒 (4)</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Zone 1: Learning Academy (智趣学堂) -->
+    <section class="featured-zone" id="zone-learning">
+      <div class="section-title-row">
+        <h3 class="section-heading">
+          <span>📚 智趣学堂 · 益智闯关乐园</span>
+        </h3>
+        <span class="section-badge-count">核心主推</span>
+      </div>
+
+      <div class="big-card">
+        <div class="big-card-main">
+          <span class="big-card-tag">⭐ 全新深度整合 · 小学生全学科互动大世界</span>
+          <h2 class="big-card-title">
+            <span>智趣学堂：小学生游戏化闯关学习平台</span>
+          </h2>
+          <p class="big-card-desc">
+            基于 React 19 构建的现代化互动学习体系，完整覆盖<strong>人教版小学三年级数学全册 17 个单元核心知识点</strong>！告别枯燥刷题，通过名师图文点拨、高自由度具象互动教具、血条对决趣味闯关与领主魔王战，让孩子在玩耍中爱上思考与探索！
+          </p>
+
+          <div class="learning-chips">
+            <span class="chip-item">🧭 齿轮联动时分秒教具</span>
+            <span class="chip-item">🍕 分数披萨切分机</span>
+            <span class="chip-item">📐 周长红线与面积网格</span>
+            <span class="chip-item">🗺️ 八方向小镇探险罗盘</span>
+            <span class="chip-item">🐉 常驻伴学算术小神龙</span>
+            <span class="chip-item">🔥 火柴人荣耀接力</span>
+          </div>
+
+          <a href="./scratch/" class="btn-launch-learning">
+            <span>🚀 立即开启智趣学堂闯关</span>
+            <span>➔</span>
+          </a>
+        </div>
+
+        <div class="big-card-side">
+          <div class="side-feature-item">
+            <div class="side-feature-icon">🧩</div>
+            <div class="side-feature-info">
+              <h4>【具象工坊】动手做数学</h4>
+              <p>自由拖拽指针、天平度量、剪拼图形，把抽象数学概念变成看得见的动手操作。</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">⚔️</div>
+            <div class="side-feature-info">
+              <h4>【领主决战】攻克薄弱盲区</h4>
+              <p>挑战单元大魔王赢取专属黄金勋章，答错自动收录进错题本支持一键重练。</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">📱</div>
+            <div class="side-feature-info">
+              <h4>电脑 / 手机全端智能响应</h4>
+              <p>智能适配手机端点触与电脑桌面宽屏，随时随地开启沉浸式快乐伴学。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zone 2: Classic Arcade & 3D Sandbox -->
+    <section class="arcade-zone" id="zone-arcade">
+      <div class="section-title-row">
+        <h3 class="section-heading">
+          <span>🎮 经典街机 · 3D体素沙盒探索</span>
+        </h3>
+        <span class="section-badge-count">4 款精选</span>
+      </div>
+
+      <div class="games-grid">
+        <!-- 1. Odyssey 3D -->
+        <div class="game-card odyssey" data-category="arcade">
+          <div>
+            <span class="card-badge">重磅 3D 箱庭世界</span>
+            <h3 class="card-title">马里奥：奥德赛</h3>
+            <p class="card-desc">
+              全 3D 帽子王国箱庭世界！投掷凯比帽子、踩帽二段超跳、附身变身板栗仔、收集发光力量之月，为奥德赛号充能启航！
+            </p>
+            <ul class="features-list">
+              <li>🎩 凯比帽子掷出旋转攻击与悬停</li>
+              <li>🚀 踩踏悬停帽子触发超级二段跳</li>
+              <li>🧟 附身变身板栗仔自由叠罗汉</li>
+              <li>🌙 3D 力量之月收集与专属特写</li>
+            </ul>
+          </div>
+          <a href="./odyssey/" class="play-btn">🎩 畅玩马里奥奥德赛</a>
+        </div>
+
+        <!-- 2. Mario Kart 8 -->
+        <div class="game-card kart" data-category="arcade">
+          <div>
+            <span class="card-badge">双人同机分屏竞速</span>
+            <h3 class="card-title">马里奥赛车 8</h3>
+            <p class="card-desc">
+              左右两边独立对称分裂视口，绝不遮挡视线！双人同台键盘对决（1P: WASD/空格；2P: 方向键/回车），香蕉皮龟壳道具互轰！
+            </p>
+            <ul class="features-list">
+              <li>🏎️ 左右分裂对称屏幕，视线无死角</li>
+              <li>🎮 双方独立按键支持同机双人对战</li>
+              <li>🍄 蘑菇火箭喷射、香蕉皮与追踪龟壳</li>
+              <li>🏆 3 圈竞速夺冠，解锁极速成就</li>
+            </ul>
+          </div>
+          <a href="./kart/" class="play-btn">🏁 启动马车8双人对战</a>
+        </div>
+
+        <!-- 3. Mario Classic NES -->
+        <div class="game-card mario" data-category="arcade">
+          <div>
+            <span class="card-badge">经典 NES 关卡全开</span>
+            <h3 class="card-title">超级马里奥兄弟</h3>
+            <p class="card-desc">
+              1-1平原、-1水下循环关、-2高速断桥关与1-4库巴城堡！5%几率神抽无敌星，斩断铁桥坠落库巴，解锁极限二周目！
+            </p>
+            <ul class="features-list">
+              <li>🌟 5% 概率神抽超级无敌星秒杀一切</li>
+              <li>🌊 -1 水下游泳循环关与 -2 超速断桥</li>
+              <li>🏰 1-4 库巴城堡断桥斧头与救出奇诺比奥</li>
+              <li>🔥 开启全怪物速度翻倍的狂暴极限模式</li>
+            </ul>
+          </div>
+          <a href="./mario/" class="play-btn">🎮 畅玩经典超级马里奥</a>
+        </div>
+
+        <!-- 4. Minecraft 3D -->
+        <div class="game-card minecraft" data-category="arcade">
+          <div>
+            <span class="card-badge">3D 体素自由沙盒</span>
+            <h3 class="card-title">我的世界 3D 版</h3>
+            <p class="card-desc">
+              第一人称 3D 体素世界，探索庞大矿洞、合成水桶铁镐、建造安全庇护所、防范夜间僵尸苦力怕并开启下界传送门！
+            </p>
+            <ul class="features-list">
+              <li>⛏️ 生存、创造、旁观与极限模式自由切换</li>
+              <li>🧟 僵尸、苦力怕、小猪与村民交易系统</li>
+              <li>🛠️ 完整合成台、水桶盛水与工具打造</li>
+              <li>📦 矿物透视、连锁挖矿与专属神级镐</li>
+            </ul>
+          </div>
+          <a href="./minecraft/" class="play-btn">⛏️ 立即进入我的世界</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>少儿智趣成长与游戏中心 · 纯前端 WebGPU/WebGL & React 混合架构 · 支持 Chrome / Safari / Edge 全平台现代浏览器</div>
+      <div>
+        <button id="btn-open-deploy-modal" class="deploy-badge-btn">
+          <span>🚀 查看 GitHub Pages / Cloudflare Worker 一键部署指南</span>
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- One-Click Deployment Modal -->
+  <div class="deploy-modal-overlay" id="deploy-modal">
+    <div class="deploy-modal-card">
+      <button class="modal-close-btn" id="btn-close-deploy-modal">&times;</button>
+      <div class="deploy-modal-title">
+        <span>🚀 免费平台一键部署指南</span>
+      </div>
+      <div class="deploy-method-list">
+        <div class="deploy-method-box">
+          <h4>🐙 方案一：GitHub Pages (全自动化流水线，已内置)</h4>
+          <p>
+            代码库已内置 <code>.github/workflows/deploy.yml</code>。只需将本工程推送到 GitHub 仓库的 <code>main</code> 分支，在仓库设置 <strong>Settings -> Pages -> Build and deployment Source 选择 GitHub Actions</strong>，每次 push 就会全自动构建并上线！
+          </p>
+        </div>
+
+        <div class="deploy-method-box">
+          <h4>⚡ 方案二：Cloudflare Pages / Workers (零成本全球边缘极速)</h4>
+          <p>
+            <strong>方式 A (Git 自动部署)</strong>：在 Cloudflare Dashboard 创建 Pages 项目并绑定本仓库，构建命令填 <code>npm run build</code>，输出目录填 <code>dist</code> 即可。<br>
+            <strong>方式 B (命令行直发)</strong>：已内置 <code>wrangler.toml</code>，终端执行以下命令即可直发 Cloudflare：
+          </p>
+          <code>npm run deploy:cf</code>
+        </div>
+
+        <div class="deploy-method-box">
+          <h4>🌐 方案三：Vercel / Netlify 等平台</h4>
+          <p>
+            连接 Git 仓库后选择 Vite 模板，Build Command 填 <code>npm run build</code>，Publish Directory 填 <code>dist</code> 即可零配置部署。全站所有资源均采用相对路径（base: './'），无需硬编码任何域名！
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Filter Tabs & Modal Logic -->
+  <script>
+    // 1. 分类筛选交互
+    const filterTabs = document.querySelectorAll('.tab-btn');
+    const zoneLearning = document.getElementById('zone-learning');
+    const zoneArcade = document.getElementById('zone-arcade');
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const filter = tab.getAttribute('data-filter');
+        if (filter === 'all') {
+          zoneLearning.style.display = 'block';
+          zoneArcade.style.display = 'block';
+        } else if (filter === 'learning') {
+          zoneLearning.style.display = 'block';
+          zoneArcade.style.display = 'none';
+        } else if (filter === 'arcade') {
+          zoneLearning.style.display = 'none';
+          zoneArcade.style.display = 'block';
+        }
+      });
+    });
+
+    // 2. 部署弹窗交互
+    const deployModal = document.getElementById('deploy-modal');
+    const btnOpenDeploy = document.getElementById('btn-open-deploy-modal');
+    const btnCloseDeploy = document.getElementById('btn-close-deploy-modal');
+
+    btnOpenDeploy.addEventListener('click', () => {
+      deployModal.classList.add('active');
+    });
+
+    btnCloseDeploy.addEventListener('click', () => {
+      deployModal.classList.remove('active');
+    });
+
+    deployModal.addEventListener('click', (e) => {
+      if (e.target === deployModal) {
+        deployModal.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

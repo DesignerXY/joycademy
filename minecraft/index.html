@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的世界 Web 3D 完整版 (Minecraft Web 3D)</title>
+  <link rel="stylesheet" href="/minecraft/src/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- 3D Canvas -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Crosshair (准星) -->
+  <div id="crosshair">+</div>
+
+  <!-- HUD Overlay -->
+  <div id="hud">
+    <!-- Top Debug & State Info -->
+    <div id="debug-info">
+      <div id="fps-counter">FPS: 60</div>
+      <div id="pos-info">XYZ: 0 / 32 / 0</div>
+      <div id="biome-info">生物群系: 平原 (Plains)</div>
+      <div id="target-block-info">指向方块: 无</div>
+      <div id="gamemode-info">模式: 生存模式 (Survival)</div>
+    </div>
+
+    <!-- Status Bars (Health & Hunger) -->
+    <div id="status-bars">
+      <div id="health-container" class="status-row"></div>
+      <div id="hunger-container" class="status-row"></div>
+    </div>
+
+    <!-- Quest Tracker (生存与建筑目标) -->
+    <div id="quest-tracker" class="quest-box">
+      <div class="quest-title">📋 目标任务 (Survival Quests)</div>
+      <div id="quest-list" class="quest-items">
+        <!-- Quests injected dynamically -->
+      </div>
+    </div>
+
+    <!-- Quick Help & Recipe Book Button -->
+    <button id="btn-open-recipes" class="hud-recipe-btn">📖 配方手册 [H]</button>
+
+    <!-- Hotbar (底部9格快捷栏) -->
+    <div id="hotbar-container">
+      <div id="hotbar">
+        <!-- 9 slots generated dynamically -->
+      </div>
+      <div id="hand-item-name">草方块</div>
+    </div>
+  </div>
+
+  <!-- Start / Unlocked Overlay -->
+  <div id="start-overlay" class="overlay active">
+    <div class="menu-box">
+      <h1 class="game-title">MINECRAFT 3D</h1>
+      <p class="game-subtitle">Web 完整还原版</p>
+      
+      <div class="control-help">
+        <div class="help-item"><span class="key">WASD</span> 移动</div>
+        <div class="help-item"><span class="key">Space</span> 跳跃 / 飞行上升</div>
+        <div class="help-item"><span class="key">Shift</span> 疾跑 / 飞行下降</div>
+        <div class="help-item"><span class="key">鼠标左键</span> 破坏方块 / 攻击僵尸</div>
+        <div class="help-item"><span class="key">鼠标右键</span> 放置方块 / 装水 / 交易</div>
+        <div class="help-item"><span class="key">1-9 / 滚轮</span> 切换手持方块</div>
+        <div class="help-item"><span class="key">E</span> 打开 / 关闭背包与合成</div>
+        <div class="help-item"><span class="key">H</span> 打开配方手册</div>
+        <div class="help-item"><span class="key">F</span> 创造模式切换飞行</div>
+        <div class="help-item"><span class="key">ESC</span> 暂停菜单与切换模式</div>
+      </div>
+
+      <div class="input-group">
+        <label for="seed-input">世界种子 (Seed):</label>
+        <input type="text" id="seed-input" value="minecraft123" placeholder="任意种子字符串">
+      </div>
+
+      <div style="display: flex; gap: 12px; width: 100%; margin-top: 10px;">
+        <button id="btn-start-game" class="btn btn-primary" style="flex: 2;">进入世界 (Start Game)</button>
+        <a href="../" class="btn" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; background: #334155; color: #f8fafc; font-size: 13px;" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pause Menu -->
+  <div id="pause-menu" class="overlay hidden">
+    <div class="menu-box">
+      <h2>游戏暂停</h2>
+      
+      <div class="btn-grid">
+        <button id="btn-resume" class="btn">继续游戏 (Resume)</button>
+        <button id="btn-toggle-gamemode" class="btn">切换模式: 生存 / 创造 / 旁观 / 极限</button>
+        <button id="btn-menu-recipes" class="btn">📖 查看全部合成配方</button>
+        <button id="btn-toggle-time" class="btn">切换时间: 白天 / 黑夜</button>
+        <button id="btn-toggle-weather" class="btn">切换天气: 晴朗 / 降雨</button>
+        <button id="btn-save-world" class="btn btn-success">保存存档 (Save)</button>
+        <button id="btn-reset-world" class="btn btn-danger">重置世界 (Reset)</button>
+        <a href="../" class="btn" style="text-align: center; text-decoration: none; background: #1e293b; color: #cbd5e1; display: flex; align-items: center; justify-content: center;" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+
+      <div class="settings-group">
+        <label>渲染距离 (Chunks): <span id="render-dist-val">4</span></label>
+        <input type="range" id="render-distance-slider" min="2" max="8" value="4">
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory & Crafting Window -->
+  <div id="inventory-window" class="overlay hidden">
+    <div class="inventory-box">
+      <div class="inventory-header">
+        <span id="inventory-title">物品栏与合成</span>
+        <button id="btn-inv-recipes" class="btn btn-small">📖 配方</button>
+        <button id="btn-close-inventory" class="btn-close">&times;</button>
+      </div>
+
+      <div class="inventory-body">
+        <!-- Crafting Section -->
+        <div class="crafting-section">
+          <div class="crafting-title" id="crafting-grid-title">合成 (2x2)</div>
+          <div class="crafting-layout">
+            <div id="crafting-grid" class="grid-2x2">
+              <!-- slots dynamically rendered -->
+            </div>
+            <div class="crafting-arrow">&rarr;</div>
+            <div id="crafting-result" class="item-slot result-slot"></div>
+          </div>
+        </div>
+
+        <!-- Main Player Inventory Grid -->
+        <div class="inventory-section">
+          <div class="section-title">存储栏 (Inventory)</div>
+          <div id="inventory-grid" class="grid-9x3"></div>
+          <div class="section-title">快捷栏 (Hotbar)</div>
+          <div id="inventory-hotbar-grid" class="grid-9x1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe Book Modal (合成配方大全) -->
+  <div id="recipe-window" class="overlay hidden">
+    <div class="recipe-box">
+      <div class="recipe-header">
+        <span>📖 我的世界合成配方大全</span>
+        <button id="btn-close-recipes" class="btn-close">&times;</button>
+      </div>
+      <div class="recipe-body" id="recipe-content">
+        <!-- Recipes loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Hardcore / Survival Game Over Screen -->
+  <div id="game-over-window" class="overlay hidden">
+    <div class="menu-box game-over-box">
+      <h1 class="death-title">你死了！(Game Over)</h1>
+      <p id="death-reason" class="death-desc">在极限模式中死亡，无法重生！</p>
+      <div class="btn-grid">
+        <button id="btn-spectate-after-death" class="btn btn-primary">转换为旁观模式 (Spectate)</button>
+        <button id="btn-respawn-world" class="btn btn-danger">重置世界 (Respawn / Reset)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast hidden">存档已保存！</div>
+
+  <!-- Floating Cursor Held Item -->
+  <div id="cursor-item" class="cursor-item hidden"></div>
+
+  <!-- Villager Trading Window -->
+  <div id="trading-window" class="overlay hidden">
+    <div class="trading-box">
+      <div class="trading-header">
+        <span id="trading-title">村民交易 (Villager Trade)</span>
+        <button id="btn-close-trading" class="btn-close">&times;</button>
+      </div>
+      <div class="trading-body" id="trading-list">
+        <!-- Trading offers injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Entry -->
+  <script type="module" src="/minecraft/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>超级马里奥：奥德赛 3D (Super Mario Odyssey 3D Web Edition)</title>
+  <link rel="stylesheet" href="/odyssey/src/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- 3D WebGL Canvas -->
+  <canvas id="odyssey-canvas"></canvas>
+
+  <!-- Top HUD: Coins, Moons, Health & Kingdom Title -->
+  <header id="odyssey-hud">
+    <div class="hud-left">
+      <div class="moon-counter">
+        <div class="moon-icon">🌙</div>
+        <span id="moon-count">0</span>
+        <span class="moon-target">/ 3</span>
+      </div>
+      <div class="coin-counter">
+        <div class="coin-icon">🪙</div>
+        <span id="coin-count">000</span>
+      </div>
+    </div>
+
+    <div class="hud-center">
+      <div class="kingdom-banner">
+        <span class="kingdom-tag">CAP KINGDOM</span>
+        <h2 class="kingdom-title">帽子王国 · 戴帽高塔</h2>
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <div class="health-gauge">
+        <div class="life-wedge active" id="life-1"></div>
+        <div class="life-wedge active" id="life-2"></div>
+        <div class="life-wedge active" id="life-3"></div>
+        <span class="life-text" id="life-text">3</span>
+      </div>
+      <button id="btn-sound" class="hud-btn">🔊 声音</button>
+      <a href="../" class="hud-btn exit-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+    </div>
+  </header>
+
+  <!-- Bottom Interactive Action Guide -->
+  <div id="controls-panel">
+    <div class="control-key"><span class="badge">WASD</span> 奔跑移动</div>
+    <div class="control-key"><span class="badge">Space</span> 跃起跳跃</div>
+    <div class="control-key"><span class="badge">Shift</span> 翻滚加速</div>
+    <div class="control-key"><span class="badge">C / 鼠标右键</span> 投掷凯比帽子 (Throw Cappy)</div>
+    <div class="control-key"><span class="badge">踩帽子</span> 悬停时跳上触发【帽子二段超级跳】</div>
+    <div class="control-key"><span class="badge">附身</span> 帽子命中板栗仔触发【附身变身】</div>
+  </div>
+
+  <!-- Capture Indicator Overlay -->
+  <div id="capture-status" class="capture-banner hidden">
+    🎩 已成功附身: <span id="captured-name">板栗仔 (Goomba)</span>！[按 Shift 键解除附身]
+  </div>
+
+  <!-- Power Moon Got Fanfare Banner -->
+  <div id="moon-banner" class="moon-modal hidden">
+    <div class="moon-flare"></div>
+    <div class="moon-modal-content">
+      <div class="moon-big-icon">🌙</div>
+      <h1 class="moon-got-title">YOU GOT A POWER MOON!</h1>
+      <p id="moon-name" class="moon-sub">在瀑布悬崖之巅发现的神秘宝月！</p>
+      <div class="moon-celebrate">奥德赛号飞船充能中...</div>
+    </div>
+  </div>
+
+  <!-- Intro Start Overlay -->
+  <div id="odyssey-start" class="odyssey-overlay">
+    <div class="odyssey-menu">
+      <div class="odyssey-logo-box">
+        <h3 class="logo-super">SUPER</h3>
+        <h1 class="logo-mario">MARIO</h1>
+        <h2 class="logo-odyssey">ODYSSEY</h2>
+      </div>
+      <p class="odyssey-intro">
+        原汁原味 3D 箱庭冒险！投掷帽子凯比、踩帽二段超跳、附身生物变身、收集三维力量之月并启航奥德赛号！
+      </p>
+      <button id="btn-start-odyssey" class="start-odyssey-btn">启程探险 · START ADVENTURE</button>
+    </div>
+  </div>
+
+  <script type="module" src="/odyssey/src/main.js"></script>
+</body>
+</html>

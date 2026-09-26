@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>超级马里奥兄弟 (Super Mario Bros. 1985)</title>
+  <link rel="stylesheet" href="/mario/src/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Retro Arcade Frame Container -->
+  <div id="arcade-container">
+    <!-- Top Action Bar -->
+    <header class="arcade-header">
+      <div class="arcade-brand">
+        <span class="nes-badge">NES 1985</span>
+        <h1 class="title-text">SUPER MARIO BROS.</h1>
+      </div>
+      <div class="arcade-actions">
+        <button id="btn-super-jump" class="arcade-btn" style="background: #ec4899; color: #fff; font-weight: bold;">🚀 超级大跳 [3]</button>
+        <button id="btn-next-level" class="arcade-btn" style="background: #eab308; color: #000; font-weight: bold;">⚡ 瞬切下关 [N]</button>
+        <button id="btn-sound-toggle" class="arcade-btn">🔊 声音</button>
+        <button id="btn-restart-game" class="arcade-btn">🔄 重玩</button>
+        <a href="../" class="arcade-btn hub-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <!-- Main Game Canvas Frame -->
+    <div class="canvas-wrapper">
+      <canvas id="mario-canvas"></canvas>
+
+      <!-- Start Overlay -->
+      <div id="start-overlay" class="game-overlay">
+        <div class="mario-title-screen">
+          <div class="logo-box">
+            <h1 class="logo-super">SUPER</h1>
+            <h1 class="logo-mario">MARIO BROS.</h1>
+          </div>
+          <div class="instruction-box">
+            <p class="blink-text">★ 1 PLAYER GAME ★</p>
+            <div class="keyboard-guide">
+              <div class="guide-row"><span class="key">WASD / 方向键</span> 左右移动与下蹲</div>
+              <div class="guide-row"><span class="key">Space / Z / J</span> 经典跳跃 (长按高跳)</div>
+              <div class="guide-row"><span class="key">按键 3</span> 🚀 超级大跳 (腾空极高！飞跃任何高水管)</div>
+              <div class="guide-row"><span class="key">问号块</span> 🌟 65% 概率抽无敌星 (满分100！穿管道横冲直撞)</div>
+              <div class="guide-row"><span class="key">Shift / X / K</span> 冲刺跑步 / 发射火球</div>
+              <div class="guide-row"><span class="key">下水管</span> 站在特殊水管按向下键钻入</div>
+            </div>
+            <button id="btn-start-game" class="nes-btn-big">PRESS START / 开始游戏</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage Clear Overlay -->
+      <div id="clear-overlay" class="game-overlay hidden">
+        <div class="clear-modal">
+          <h2 class="clear-title">STAGE CLEAR!</h2>
+          <p class="clear-sub">恭喜通关 WORLD 1-1！</p>
+          <div id="final-score" class="score-stat">得分: 000000</div>
+          <button onclick="location.reload()" class="nes-btn-big">再玩一次</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-screen Touch Gamepad (Mobile / Tablet Support) -->
+    <footer class="touch-controller">
+      <div class="dpad-box">
+        <button id="btn-touch-left" class="touch-btn dpad-btn" aria-label="Left">&#9664;</button>
+        <div class="dpad-vertical">
+          <button id="btn-touch-up" class="touch-btn dpad-btn" aria-label="Up">&#9650;</button>
+          <button id="btn-touch-down" class="touch-btn dpad-btn" aria-label="Down">&#9660;</button>
+        </div>
+        <button id="btn-touch-right" class="touch-btn dpad-btn" aria-label="Right">&#9654;</button>
+      </div>
+
+      <div class="action-buttons-box">
+        <button id="btn-touch-superjump" class="touch-btn action-btn super-btn" style="background: #db2777;">3<br><span class="btn-sub">超级跳</span></button>
+        <button id="btn-touch-fire" class="touch-btn action-btn fire-btn">B<br><span class="btn-sub">冲刺/火球</span></button>
+        <button id="btn-touch-jump" class="touch-btn action-btn jump-btn">A<br><span class="btn-sub">跳跃</span></button>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="/mario/src/main.js"></script>
+</body>
+</html>
