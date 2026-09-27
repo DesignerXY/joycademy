@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国际象棋大师 · Web 竞技版 (Chess Master)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="chess-app-container">
+    <!-- Top Action Bar -->
+    <header class="game-header">
+      <div class="header-brand">
+        <span class="badge-tag">♟️ 智力博弈殿堂</span>
+        <h1 class="header-title">国际象棋大师 (Chess Master)</h1>
+      </div>
+      <div class="header-actions">
+        <a href="../" class="btn-action hub-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <div class="game-layout">
+      <!-- Left: Board Section -->
+      <div class="board-column">
+        <!-- Turn Status & Timer Bar -->
+        <div class="turn-banner" id="turn-banner">
+          <div class="turn-indicator">
+            <span class="turn-dot" id="turn-dot"></span>
+            <span id="turn-text">轮到白方走子</span>
+          </div>
+          <div class="check-warning hidden" id="check-warning">⚠️ 将军！(CHECK)</div>
+        </div>
+
+        <div class="board-frame">
+          <div id="chess-board" class="chess-board"></div>
+        </div>
+
+        <!-- Captured Pieces Tray -->
+        <div class="captured-tray">
+          <div class="captured-row">
+            <span class="captured-label">白方已吃:</span>
+            <span id="white-captured" class="captured-pieces"></span>
+          </div>
+          <div class="captured-row">
+            <span class="captured-label">黑方已吃:</span>
+            <span id="black-captured" class="captured-pieces"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Control & History Panel -->
+      <div class="control-panel">
+        <div class="panel-card game-modes">
+          <h3 class="panel-subtitle">🎮 对局模式</h3>
+          <div class="mode-buttons">
+            <button id="btn-mode-ai" class="mode-btn active">🤖 人机对战 (执白先手)</button>
+            <button id="btn-mode-pvp" class="mode-btn">👥 双人同机对弈</button>
+          </div>
+          <div class="difficulty-wrapper" id="diff-box">
+            <label for="ai-diff">AI 难度：</label>
+            <select id="ai-diff" class="select-diff">
+              <option value="easy">入门小棋手 (快速)</option>
+              <option value="medium" selected>进阶大师 (启发式)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-card actions-card">
+          <button id="btn-restart" class="action-btn primary">🔄 重新开始新局</button>
+          <button id="btn-undo" class="action-btn secondary">↩️ 悔棋 (Undo)</button>
+          <button id="btn-sound-toggle" class="action-btn toggle-btn">🔊 棋子落子音效: 开</button>
+        </div>
+
+        <div class="panel-card history-card">
+          <h3 class="panel-subtitle">📜 对局走子记录 (Notation)</h3>
+          <div id="move-history" class="move-history-list">
+            <div class="history-empty">对局开始，白方先走。</div>
+          </div>
+        </div>
+
+        <div class="panel-card rules-card">
+          <h3 class="panel-subtitle">💡 棋子行棋速记</h3>
+          <ul class="rules-list">
+            <li><strong>♔ 王 (King)</strong>：八方单格移动，不可送将。</li>
+            <li><strong>♕ 后 (Queen)</strong>：横竖斜无限制远距行棋。</li>
+            <li><strong>♖ 车 (Rook)</strong>：横线与竖线直行，阻挡即止。</li>
+            <li><strong>♗ 象 (Bishop)</strong>：仅沿所属斜线远距行棋。</li>
+            <li><strong>♘ 马 (Knight)</strong>：走“日”字无视阻挡跳跃。</li>
+            <li><strong>♙ 兵 (Pawn)</strong>：直走斜吃，首步可走两格。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promotion Modal -->
+  <div id="promotion-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>兵底线升变 (Pawn Promotion)</h3>
+      <p>请选择晋升的棋子类型：</p>
+      <div class="promo-options">
+        <button class="promo-btn" data-piece="q">♕ 后 (Queen)</button>
+        <button class="promo-btn" data-piece="r">♖ 车 (Rook)</button>
+        <button class="promo-btn" data-piece="b">♗ 象 (Bishop)</button>
+        <button class="promo-btn" data-piece="n">♘ 马 (Knight)</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/chess.js"></script>
+</body>
+</html>

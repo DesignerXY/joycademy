@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>少儿智趣成长与游戏中心 · 智趣学堂 & 经典街机 & 3D体素沙盒</title>
-  <meta name="description" content="面向青少年的沉浸式全学科游戏化闯关与经典3D街机中心：涵盖人教版小学数学17单元知识点具象工坊、3D超级马里奥奥德赛、双人分屏马车8、经典马里奥与3D我的世界。">
+  <title>少儿智趣成长与游戏中心 · 智趣学堂 & 智慧棋苑 & 经典街机 & 3D沙盒</title>
+  <meta name="description" content="面向青少年的沉浸式全学科游戏化闯关与经典3D街机/棋类博弈中心：涵盖人教版小学数学17单元知识点、国际象棋、中国象棋、中国围棋、3D超级马里奥奥德赛、双人分屏马车8、经典马里奥与3D我的世界。">
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -91,7 +91,7 @@
     p.hero-sub {
       font-size: 17px;
       color: var(--text-sub);
-      max-width: 760px;
+      max-width: 820px;
       margin: 0 auto 28px;
       line-height: 1.6;
     }
@@ -99,9 +99,9 @@
     /* Stats Overview Bar */
     .stats-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 14px;
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto 36px;
     }
 
@@ -149,19 +149,20 @@
 
     .filter-tabs {
       display: inline-flex;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--surface-border);
       border-radius: 999px;
       padding: 4px;
       gap: 4px;
       backdrop-filter: blur(12px);
+      flex-wrap: wrap;
     }
 
     .tab-btn {
       background: transparent;
       border: none;
       color: #94a3b8;
-      padding: 8px 20px;
+      padding: 8px 18px;
       border-radius: 999px;
       font-size: 14px;
       font-weight: 700;
@@ -170,6 +171,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
     }
 
     .tab-btn:hover {
@@ -182,11 +184,37 @@
       box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
     }
 
-    /* Learning Zone Featured Big Banner */
-    .featured-zone {
-      margin-bottom: 32px;
+    /* Zone Sections */
+    .featured-zone, .board-zone, .arcade-zone {
+      margin-bottom: 40px;
     }
 
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+
+    .section-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-badge-count {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 3px 10px;
+      border-radius: 999px;
+      color: #94a3b8;
+    }
+
+    /* Big Card (Learning) */
     .big-card {
       background: linear-gradient(135deg, rgba(30, 27, 75, 0.75) 0%, rgba(19, 26, 42, 0.85) 100%);
       border: 1.5px solid rgba(139, 92, 246, 0.4);
@@ -240,10 +268,6 @@
       color: #ffffff;
       margin-bottom: 12px;
       letter-spacing: -0.3px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
     }
 
     .big-card-desc {
@@ -335,33 +359,7 @@
       transform: translateY(-2px);
     }
 
-    /* Section Subhead */
-    .section-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      padding-top: 8px;
-    }
-
-    .section-heading {
-      font-size: 20px;
-      font-weight: 800;
-      color: #f1f5f9;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-badge-count {
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 3px 10px;
-      border-radius: 999px;
-      color: #94a3b8;
-    }
-
-    /* Games Grid */
+    /* Grid Layout for Games & Boards */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -373,7 +371,7 @@
       background: var(--surface);
       border: 1px solid var(--surface-border);
       border-radius: 24px;
-      padding: 30px 24px;
+      padding: 28px 22px;
       text-align: left;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       backdrop-filter: blur(14px);
@@ -395,6 +393,10 @@
       transition: all 0.3s ease;
     }
 
+    /* Card Top Neon Borders */
+    .game-card.chess::before { background: linear-gradient(90deg, #6366f1, #a855f7); }
+    .game-card.xiangqi::before { background: linear-gradient(90deg, #ea580c, #dc2626); }
+    .game-card.weiqi::before { background: linear-gradient(90deg, #0284c7, #10b981); }
     .game-card.odyssey::before { background: linear-gradient(90deg, #facc15, #d82800); }
     .game-card.kart::before { background: linear-gradient(90deg, #0284c7, #38bdf8); }
     .game-card.mario::before { background: linear-gradient(90deg, #d82800, #fcbc00); }
@@ -416,6 +418,9 @@
       letter-spacing: 0.5px;
     }
 
+    .chess .card-badge { background: rgba(99, 102, 241, 0.25); color: #c7d2fe; }
+    .xiangqi .card-badge { background: rgba(234, 88, 12, 0.25); color: #fed7aa; }
+    .weiqi .card-badge { background: rgba(6, 182, 212, 0.25); color: #a5f3fc; }
     .odyssey .card-badge { background: rgba(250, 204, 21, 0.2); color: #fde047; }
     .kart .card-badge { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; }
     .mario .card-badge { background: rgba(216, 40, 0, 0.25); color: #ff7755; }
@@ -425,32 +430,35 @@
       font-family: 'Press Start 2P', monospace;
       font-size: 15px;
       color: #ffffff;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.45;
     }
 
+    .chess .card-title { color: #c7d2fe; }
+    .xiangqi .card-title { color: #fdba74; }
+    .weiqi .card-title { color: #67e8f9; }
     .odyssey .card-title { color: #fde047; }
     .kart .card-title { color: #38bdf8; }
     .mario .card-title { color: #fcbc00; }
     .minecraft .card-title { color: #86efac; }
 
     .card-desc {
-      font-size: 14px;
+      font-size: 13.5px;
       color: #94a3b8;
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .features-list {
       list-style: none;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
     }
 
     .features-list li {
-      font-size: 13px;
+      font-size: 12.5px;
       color: #cbd5e1;
       display: flex;
       align-items: center;
@@ -461,13 +469,46 @@
       display: block;
       width: 100%;
       text-align: center;
-      padding: 14px 20px;
+      padding: 13px 18px;
       border-radius: 14px;
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
       text-decoration: none;
       transition: all 0.2s ease;
       cursor: pointer;
+    }
+
+    .chess .play-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+    }
+    .chess .play-btn:hover {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .xiangqi .play-btn {
+      background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(194, 65, 12, 0.4);
+    }
+    .xiangqi .play-btn:hover {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+      box-shadow: 0 8px 24px rgba(194, 65, 12, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .weiqi .play-btn {
+      background: linear-gradient(135deg, #0284c7 0%, #0f766e 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+    .weiqi .play-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0d9488 100%);
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.7);
+      transform: translateY(-2px);
     }
 
     .odyssey .play-btn {
@@ -683,10 +724,10 @@
     <!-- Hero Header -->
     <header class="hero-section">
       <div class="hero-top-badge">
-        <span>🌟 启发思考 · 具象动手 · 极速畅玩</span>
+        <span>🌟 启发思考 · 智力博弈 · 极速畅玩</span>
       </div>
       <h1 class="hero-title">少儿智趣成长与游戏中心</h1>
-      <p class="hero-sub">小学生全学科游戏化互动闯关与经典 3D 街机沙盒乐园，纯前端高性能驱动，无需繁琐安装，随时随地秒开！</p>
+      <p class="hero-sub">全学科游戏化闯关、传统国粹棋苑博弈与经典 3D 街机沙盒，纯前端高性能驱动，零门槛秒开畅玩！</p>
 
       <!-- Stats Bar -->
       <div class="stats-bar">
@@ -698,10 +739,10 @@
           </div>
         </div>
         <div class="stat-pill">
-          <div class="stat-icon">⚙️</div>
+          <div class="stat-icon">♟️</div>
           <div class="stat-text">
-            <div class="stat-num">5+ 具象工坊</div>
-            <div class="stat-desc">表盘/披萨/周长网格动手教具</div>
+            <div class="stat-num">3 款博弈经典</div>
+            <div class="stat-desc">国际象棋 / 中国象棋 / 围棋</div>
           </div>
         </div>
         <div class="stat-pill">
@@ -715,7 +756,7 @@
           <div class="stat-icon">🚀</div>
           <div class="stat-text">
             <div class="stat-num">100% 纯前端</div>
-            <div class="stat-desc">支持离线、GitHub与Worker</div>
+            <div class="stat-desc">免装离线、GitHub与Worker直发</div>
           </div>
         </div>
       </div>
@@ -723,8 +764,9 @@
       <!-- Category Filter Tabs -->
       <div class="filter-tabs-wrapper">
         <div class="filter-tabs" role="tablist">
-          <button class="tab-btn active" data-filter="all">🌟 全部体验 (5)</button>
+          <button class="tab-btn active" data-filter="all">🌟 全部体验 (8)</button>
           <button class="tab-btn" data-filter="learning">📚 智趣学堂 (1)</button>
+          <button class="tab-btn" data-filter="board">♟️ 智慧棋苑 (3)</button>
           <button class="tab-btn" data-filter="arcade">🎮 经典街机 & 3D沙盒 (4)</button>
         </div>
       </div>
@@ -790,7 +832,73 @@
       </div>
     </section>
 
-    <!-- Zone 2: Classic Arcade & 3D Sandbox -->
+    <!-- Zone 2: Strategic Board Games (智慧棋苑) -->
+    <section class="board-zone" id="zone-board">
+      <div class="section-title-row">
+        <h3 class="section-heading">
+          <span>♟️ 智慧棋苑 · 传统国粹与智力博弈</span>
+        </h3>
+        <span class="section-badge-count">3 款博弈经典</span>
+      </div>
+
+      <div class="games-grid">
+        <!-- 1. Chess (国际象棋) -->
+        <div class="game-card chess">
+          <div>
+            <span class="card-badge">国际标准 8×8</span>
+            <h3 class="card-title">国际象棋大师</h3>
+            <p class="card-desc">
+              全球智力博弈之王！标准 8×8 国际赛制棋盘，王后车象马兵全套规矩、兵底线升变、行棋轨迹高亮、智能启发式陪练 AI 与同机双人对战！
+            </p>
+            <ul class="features-list">
+              <li>♔ 王后车象马兵全套纯正棋规</li>
+              <li>💡 绿点步法提示与红圈吃子警示</li>
+              <li>🤖 启发式 AI（吃子与中心占优推演）</li>
+              <li>📜 国际象棋对局代数记谱记录</li>
+            </ul>
+          </div>
+          <a href="./chess/" class="play-btn">♟️ 开启国际象棋对弈</a>
+        </div>
+
+        <!-- 2. Xiangqi (中国象棋) -->
+        <div class="game-card xiangqi">
+          <div>
+            <span class="card-badge">传统国粹 9×10</span>
+            <h3 class="card-title">中国象棋 · 楚河汉界</h3>
+            <p class="card-desc">
+              中华千年智慧沉淀！真实还原 9×10 木纹楚河汉界与九宫格，严格遵循“马走日附蹩马腿、象飞田附塞象眼、炮隔山打子、将帅不可照面”等正统棋规！
+            </p>
+            <ul class="features-list">
+              <li>🏮 帅仕相俥傌炮兵 / 將士象車馬砲卒</li>
+              <li>🐎 严谨日字蹩马腿与田字塞象眼判定</li>
+              <li>💥 炮隔山精准打击与飞将照面禁例</li>
+              <li>🔊 原声实木落子“嗒”与吃子“铛”音效</li>
+            </ul>
+          </div>
+          <a href="./xiangqi/" class="play-btn">🏮 开启中国象棋对局</a>
+        </div>
+
+        <!-- 3. Weiqi / Go (中国围棋) -->
+        <div class="game-card weiqi">
+          <div>
+            <span class="card-badge">黑白玄素 · 9/13/19路</span>
+            <h3 class="card-title">中国围棋 · 坐隐忘忧</h3>
+            <p class="card-desc">
+              千古黑白玄素变幻！支持 9路 (少儿速战入门)、13路与 19路 (正规大盘) 自由切换；严格气数洪水计算、绝杀提子、禁自杀着点、打劫禁着与虚手终局！
+            </p>
+            <ul class="features-list">
+              <li>⚪ 9路 / 13路 / 19路三种盘面即时切换</li>
+              <li>🔍 精准无漏气数计算与死子自动提子</li>
+              <li>⚖️ 禁自杀着点与单子互提打劫禁着规矩</li>
+              <li>🤖 围棋启发式 AI 占角与紧气陪练</li>
+            </ul>
+          </div>
+          <a href="./weiqi/" class="play-btn">⚪ 开启围棋黑白对弈</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zone 3: Classic Arcade & 3D Sandbox -->
     <section class="arcade-zone" id="zone-arcade">
       <div class="section-title-row">
         <h3 class="section-heading">
@@ -876,7 +984,7 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <div>少儿智趣成长与游戏中心 · 纯前端 WebGPU/WebGL & React 混合架构 · 支持 Chrome / Safari / Edge 全平台现代浏览器</div>
+      <div>少儿智趣成长与游戏中心 · 纯前端 WebGL / Canvas & React 混合架构 · 支持 Chrome / Safari / Edge 全平台现代浏览器</div>
       <div>
         <button id="btn-open-deploy-modal" class="deploy-badge-btn">
           <span>🚀 查看 GitHub Pages / Cloudflare Worker 一键部署指南</span>
@@ -924,6 +1032,7 @@
     // 1. 分类筛选交互
     const filterTabs = document.querySelectorAll('.tab-btn');
     const zoneLearning = document.getElementById('zone-learning');
+    const zoneBoard = document.getElementById('zone-board');
     const zoneArcade = document.getElementById('zone-arcade');
 
     filterTabs.forEach(tab => {
@@ -934,12 +1043,19 @@
         const filter = tab.getAttribute('data-filter');
         if (filter === 'all') {
           zoneLearning.style.display = 'block';
+          zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'block';
         } else if (filter === 'learning') {
           zoneLearning.style.display = 'block';
+          zoneBoard.style.display = 'none';
+          zoneArcade.style.display = 'none';
+        } else if (filter === 'board') {
+          zoneLearning.style.display = 'none';
+          zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'none';
         } else if (filter === 'arcade') {
           zoneLearning.style.display = 'none';
+          zoneBoard.style.display = 'none';
           zoneArcade.style.display = 'block';
         }
       });

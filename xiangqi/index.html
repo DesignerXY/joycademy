@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国象棋国粹馆 · 楚河汉界 (Chinese Chess - Xiangqi)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@600;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="xiangqi-container">
+    <!-- Top Action Bar -->
+    <header class="game-header">
+      <div class="header-brand">
+        <span class="badge-tag">🏮 传统国粹博弈</span>
+        <h1 class="header-title">中国象棋 · 楚河汉界 (Xiangqi)</h1>
+      </div>
+      <div class="header-actions">
+        <a href="../" class="btn-action hub-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <div class="game-layout">
+      <!-- Left: Board Section -->
+      <div class="board-column">
+        <div class="turn-banner" id="turn-banner">
+          <div class="turn-indicator">
+            <span class="turn-badge red" id="turn-badge">红方走子</span>
+            <span class="turn-sub" id="turn-sub">红方执先</span>
+          </div>
+          <div class="check-warning hidden" id="check-warning">⚠️ 将军！(CHECK)</div>
+        </div>
+
+        <!-- Xiangqi Board Wrapper -->
+        <div class="board-frame">
+          <div id="xiangqi-board" class="xiangqi-board">
+            <!-- Background Canvas for Grid Lines & River -->
+            <canvas id="board-grid-canvas" width="540" height="600"></canvas>
+            <!-- Pieces Container -->
+            <div id="pieces-layer" class="pieces-layer"></div>
+            <!-- Target / Move Hints Layer -->
+            <div id="hints-layer" class="hints-layer"></div>
+          </div>
+        </div>
+
+        <!-- Captured Tray -->
+        <div class="captured-tray">
+          <div class="captured-group">
+            <span class="cap-title red-title">红方捕获：</span>
+            <span id="red-captured" class="cap-tokens"></span>
+          </div>
+          <div class="captured-group">
+            <span class="cap-title black-title">黑方捕获：</span>
+            <span id="black-captured" class="cap-tokens"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Control Panel -->
+      <div class="control-panel">
+        <div class="panel-card game-modes">
+          <h3 class="panel-subtitle">⚔️ 对局模式</h3>
+          <div class="mode-buttons">
+            <button id="btn-mode-ai" class="mode-btn active">🤖 人机对战 (红方先手)</button>
+            <button id="btn-mode-pvp" class="mode-btn">👥 双人轮流同台</button>
+          </div>
+          <div class="difficulty-row" id="diff-box">
+            <label for="ai-diff">AI 棋力：</label>
+            <select id="ai-diff" class="select-diff">
+              <option value="easy">棋艺初学 (迅速)</option>
+              <option value="medium" selected>棋坛好手 (启发式)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-card actions-card">
+          <button id="btn-restart" class="action-btn primary">🔄 重新开局</button>
+          <button id="btn-undo" class="action-btn secondary">↩️ 悔棋 (Undo)</button>
+          <button id="btn-sound-toggle" class="action-btn toggle-btn">🔊 沉浸落子音效: 开</button>
+        </div>
+
+        <div class="panel-card history-card">
+          <h3 class="panel-subtitle">📜 棋谱招式记录</h3>
+          <div id="move-history" class="move-history-list">
+            <div class="history-empty">战幕拉开，红方先行。</div>
+          </div>
+        </div>
+
+        <div class="panel-card mnemonic-card">
+          <h3 class="panel-subtitle">📜 象棋口诀速记</h3>
+          <div class="mnemonic-grid">
+            <div class="mnem-item"><strong>马走日</strong>，遇绊脚则阻</div>
+            <div class="mnem-item"><strong>象飞田</strong>，不过河防塞眼</div>
+            <div class="mnem-item"><strong>车行直</strong>，横冲直撞斩敌酋</div>
+            <div class="mnem-item"><strong>炮隔子</strong>，隔山发炮打敌阵</div>
+            <div class="mnem-item"><strong>士走斜</strong>，九宫护驾不离城</div>
+            <div class="mnem-item"><strong>兵向前</strong>，过河横进不可退</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/xiangqi.js"></script>
+</body>
+</html>

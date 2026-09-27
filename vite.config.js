@@ -17,7 +17,7 @@ export default defineConfig({
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           const url = req.url ? req.url.split('?')[0] : '';
-          const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch'];
+          const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch', '/chess', '/xiangqi', '/weiqi'];
           if (paths.includes(url)) {
             res.writeHead(301, { Location: url + '/' });
             return res.end();
@@ -35,6 +35,9 @@ export default defineConfig({
       input: {
         main: resolve(rootDir, 'index.html'),
         scratch: resolve(rootDir, 'scratch/index.html'),
+        chess: resolve(rootDir, 'chess/index.html'),
+        xiangqi: resolve(rootDir, 'xiangqi/index.html'),
+        weiqi: resolve(rootDir, 'weiqi/index.html'),
         odyssey: resolve(rootDir, 'odyssey/index.html'),
         kart: resolve(rootDir, 'kart/index.html'),
         mario: resolve(rootDir, 'mario/index.html'),

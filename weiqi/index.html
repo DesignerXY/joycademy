@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国围棋 · 黑白对弈 (Weiqi - Go Master)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@600;900&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="weiqi-container">
+    <!-- Top Action Bar -->
+    <header class="game-header">
+      <div class="header-brand">
+        <span class="badge-tag">⚪⚫ 千古黑白玄素</span>
+        <h1 class="header-title">中国围棋 · 坐隐忘忧 (Weiqi)</h1>
+      </div>
+      <div class="header-actions">
+        <a href="../" class="btn-action hub-btn" title="返回少儿智趣成长与游戏中心">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <div class="game-layout">
+      <!-- Left: Board Section -->
+      <div class="board-column">
+        <div class="turn-banner" id="turn-banner">
+          <div class="turn-indicator">
+            <span class="stone-badge black" id="turn-stone"></span>
+            <span class="turn-text" id="turn-text">轮到黑方落子 (第 1 手)</span>
+          </div>
+          <div class="captured-stats">
+            <span class="cap-pill black-cap">黑方提子: <strong id="black-score">0</strong></span>
+            <span class="cap-pill white-cap">白方提子: <strong id="white-score">0</strong></span>
+          </div>
+        </div>
+
+        <div class="board-frame">
+          <canvas id="weiqi-canvas" width="560" height="560"></canvas>
+        </div>
+
+        <!-- Quick Board Size Selector -->
+        <div class="board-size-bar">
+          <span class="size-label">棋盘路数：</span>
+          <div class="size-buttons">
+            <button class="size-btn active" data-size="9">9 路 (少儿速战入门)</button>
+            <button class="size-btn" data-size="13">13 路 (中盘进阶实战)</button>
+            <button class="size-btn" data-size="19">19 路 (正规标准大盘)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Control Panel -->
+      <div class="control-panel">
+        <div class="panel-card game-modes">
+          <h3 class="panel-subtitle">⚔️ 对局模式</h3>
+          <div class="mode-buttons">
+            <button id="btn-mode-ai" class="mode-btn active">🤖 人机博弈 (执黑先手)</button>
+            <button id="btn-mode-pvp" class="mode-btn">👥 两位棋手同台</button>
+          </div>
+          <div class="difficulty-row" id="diff-box">
+            <label for="ai-diff">AI 棋力：</label>
+            <select id="ai-diff" class="select-diff">
+              <option value="easy">入门棋童 (随性)</option>
+              <option value="medium" selected>棋院学士 (紧气/占角)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-card actions-card">
+          <button id="btn-pass" class="action-btn pass-btn">✋ 虚手停一手 (Pass)</button>
+          <button id="btn-undo" class="action-btn secondary">↩️ 悔棋 (Undo)</button>
+          <button id="btn-restart" class="action-btn restart-btn">🔄 重新开局</button>
+          <button id="btn-sound-toggle" class="action-btn toggle-btn">🔊 沉浸落子音效: 开</button>
+        </div>
+
+        <div class="panel-card history-card">
+          <h3 class="panel-subtitle">📜 棋谱对局步数</h3>
+          <div id="move-history" class="move-history-list">
+            <div class="history-empty">盘虚黑白隐，静待第一手。</div>
+          </div>
+        </div>
+
+        <div class="panel-card go-rules-card">
+          <h3 class="panel-subtitle">💡 围棋基本入门规则</h3>
+          <ul class="rules-list">
+            <li><strong>气与提子</strong>：棋子紧邻的十字交叉点为“气”，气尽则被提。</li>
+            <li><strong>禁着点</strong>：落子后自身无气且不能提对方子者不可下。</li>
+            <li><strong>打劫规矩</strong>：单子互提时不可连环立即回提，需隔一手。</li>
+            <li><strong>虚手终局</strong>：双方均虚手（连续Pass）则对局结束。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/weiqi.js"></script>
+</body>
+</html>
