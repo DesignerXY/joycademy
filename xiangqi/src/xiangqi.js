@@ -111,7 +111,7 @@ class XiangqiGame {
     this.history = [];
     this.captured = { r: [], b: [] };
     this.isAI = true;
-    this.aiDifficulty = 'medium';
+    this.aiDifficulty = 'master';
     this.gameOver = false;
     this.lastMove = null;
 
@@ -587,14 +587,252 @@ class XiangqiGame {
     }
   }
 
+  // 经典开局应招变式库（根据红方第一步多重权值随机应变，杜绝千篇一律）
+  tryOpeningBook() {
+    if (this.history.length > 2) return null; // 仅在对局前两回合启用丰富开局库
+
+    const firstRedMove = this.history[0];
+    if (!firstRedMove) return null;
+
+    const toR = firstRedMove.to.r;
+    const toC = firstRedMove.to.c;
+    const candidates = [];
+
+    // 1. 红方当头中炮 (炮二平五 C:7,7->7,4 或 炮八平五 C:7,1->7,4)
+    if (firstRedMove.piece === 'C' && toC === 4) {
+      candidates.push(
+        { from: [0, 7], to: [2, 6], weight: 32, desc: '屏风马进右马 (稳健抗衡中炮)' },
+        { from: [0, 1], to: [2, 2], weight: 28, desc: '屏风马进左马 (守卫中卒)' },
+        { from: [2, 7], to: [2, 4], weight: 22, desc: '顺手炮 (以攻对攻，火爆对决)' },
+        { from: [2, 1], to: [2, 4], weight: 18, desc: '列手炮 (左右对攻)' },
+        { from: [3, 6], to: [4, 6], weight: 16, desc: '进7卒制马 (反客为主)' },
+        { from: [3, 2], to: [4, 2], weight: 16, desc: '进3卒制马 (活络边马)' },
+        { from: [0, 6], to: [2, 4], weight: 12, desc: '飞右象 (中宫筑城)' },
+        { from: [0, 2], to: [2, 4], weight: 12, desc: '飞左象 (铜墙铁壁)' }
+      );
+    }
+    // 2. 红方进兵局 (兵七进一 P:6,2->5,2 或 兵三进一 P:6,6->5,6)
+    else if (firstRedMove.piece === 'P' && toR === 5) {
+      candidates.push(
+        { from: [3, 2], to: [4, 2], weight: 32, desc: '挺3卒对攻' },
+        { from: [3, 6], to: [4, 6], weight: 30, desc: '挺7卒对攻' },
+        { from: [2, 1], to: [2, 4], weight: 25, desc: '卒底反架当头炮' },
+        { from: [2, 7], to: [2, 4], weight: 22, desc: '右中炮威慑' },
+        { from: [0, 1], to: [2, 2], weight: 20, desc: '起右正马' },
+        { from: [0, 7], to: [2, 6], weight: 20, desc: '起左正马' }
+      );
+    }
+    // 3. 红方飞相局 (相七进五 或 相三进五)
+    else if (firstRedMove.piece === 'B' && toR === 7 && toC === 4) {
+      candidates.push(
+        { from: [2, 1], to: [2, 4], weight: 32, desc: '左中炮破相攻中' },
+        { from: [2, 7], to: [2, 4], weight: 30, desc: '右中炮猛轰中路' },
+        { from: [3, 2], to: [4, 2], weight: 25, desc: '挺3卒开阔马路' },
+        { from: [0, 1], to: [2, 2], weight: 22, desc: '起边马厚实自成一体' }
+      );
+    }
+    // 4. 红方起马局 (马二进三 或 马八进七)
+    else if (firstRedMove.piece === 'N') {
+      candidates.push(
+        { from: [3, 6], to: [4, 6], weight: 32, desc: '进7卒封锁马头' },
+        { from: [3, 2], to: [4, 2], weight: 30, desc: '进3卒封锁马腿' },
+        { from: [2, 7], to: [2, 4], weight: 26, desc: '中炮发力先声夺人' },
+        { from: [0, 7], to: [2, 6], weight: 24, desc: '对应起马均势博弈' }
+      );
+    } else {
+      // 其他自由开局：随机在正统走法中挑选
+      candidates.push(
+        { from: [0, 1], to: [2, 2], weight: 25, desc: '起马' },
+        { from: [0, 7], to: [2, 6], weight: 25, desc: '起马' },
+        { from: [2, 1], to: [2, 4], weight: 25, desc: '当头炮' },
+        { from: [2, 7], to: [2, 4], weight: 25, desc: '当头炮' },
+        { from: [3, 2], to: [4, 2], weight: 20, desc: '挺3卒' },
+        { from: [3, 6], to: [4, 6], weight: 20, desc: '挺7卒' }
+      );
+    }
+
+    // 过滤出当前局面下合法的开局走法
+    const legalCandidates = candidates.filter(c => {
+      const piece = this.board[c.from[0]][c.from[1]];
+      if (!piece || PIECE_CONFIG[piece].color !== 'b') return false;
+      const legals = this.getLegalMoves(c.from[0], c.from[1], this.board);
+      return legals.some(m => m.r === c.to[0] && m.c === c.to[1]);
+    });
+
+    if (legalCandidates.length === 0) return null;
+
+    // 按权重轮盘赌随机挑选，保证局局不同！
+    const totalWeight = legalCandidates.reduce((sum, c) => sum + c.weight, 0);
+    let rand = Math.random() * totalWeight;
+    for (const c of legalCandidates) {
+      if (rand < c.weight) {
+        return { fromR: c.from[0], fromC: c.from[1], toR: c.to[0], toC: c.to[1] };
+      }
+      rand -= c.weight;
+    }
+    return {
+      fromR: legalCandidates[0].from[0],
+      fromC: legalCandidates[0].from[1],
+      toR: legalCandidates[0].to[0],
+      toC: legalCandidates[0].to[1]
+    };
+  }
+
+  // 局势综合估值函数（黑方正分越高越优，红方正分越高对红越有利）
+  evaluateBoard(board) {
+    let score = 0;
+
+    for (let r = 0; r < 10; r++) {
+      for (let c = 0; c < 9; c++) {
+        const code = board[r][c];
+        if (!code) continue;
+        const info = PIECE_CONFIG[code];
+        const isBlack = info.color === 'b';
+        let pieceVal = info.val;
+
+        // 棋子位置评估 (PST 加权)
+        let posVal = 0;
+
+        if (code === 'r') { // 黑车
+          if (r >= 4 && r <= 5) posVal += 30; // 巡河
+          if (r >= 6) posVal += 50 + (r - 6) * 15; // 深入敌阵压迫
+          if (c === 3 || c === 4 || c === 5) posVal += 25; // 占领中路或肋道
+        } else if (code === 'R') { // 红车
+          if (r <= 5 && r >= 4) posVal += 30;
+          if (r <= 3) posVal += 50 + (3 - r) * 15;
+          if (c === 3 || c === 4 || c === 5) posVal += 25;
+        } else if (code === 'n') { // 黑马
+          if (r >= 3 && r <= 6 && c >= 2 && c <= 6) posVal += 30; // 居中活跃
+          if (r >= 7 && (c === 2 || c === 3 || c === 5 || c === 6)) posVal += 65; // 挂角/卧槽
+          if (c === 0 || c === 8) posVal -= 25; // 边马受限
+        } else if (code === 'N') { // 红马
+          if (r <= 6 && r >= 3 && c >= 2 && c <= 6) posVal += 30;
+          if (r <= 2 && (c === 2 || c === 3 || c === 5 || c === 6)) posVal += 65;
+          if (c === 0 || c === 8) posVal -= 25;
+        } else if (code === 'c') { // 黑炮
+          if (c === 4 && r >= 2 && r <= 5) posVal += 45; // 中炮当头
+          if (r === 9) posVal += 50; // 沉底炮
+          if (r === 4) posVal += 25; // 巡河炮
+        } else if (code === 'C') { // 红炮
+          if (c === 4 && r <= 7 && r >= 4) posVal += 45;
+          if (r === 0) posVal += 50;
+          if (r === 5) posVal += 25;
+        } else if (code === 'p') { // 黑卒
+          if (r >= 5) posVal += 80; // 过河卒
+          if (r >= 7 && c >= 3 && c <= 5) posVal += 150; // 进逼九宫小卒
+        } else if (code === 'P') { // 红兵
+          if (r <= 4) posVal += 80;
+          if (r <= 2 && c >= 3 && c <= 5) posVal += 150;
+        } else if (code === 'k' || code === 'K') { // 将帅安全
+          posVal += 50;
+        }
+
+        const totalPieceScore = pieceVal + posVal;
+        if (isBlack) {
+          score += totalPieceScore;
+        } else {
+          score -= totalPieceScore;
+        }
+      }
+    }
+
+    // 将军奖惩
+    if (this.isKingInCheck('r', board)) score += 120; // 红方被将，黑加分
+    if (this.isKingInCheck('b', board)) score -= 150; // 黑方被将，黑扣分
+
+    return score;
+  }
+
+  // Alpha-Beta 极小极大搜索算法
+  minimaxAlphaBeta(board, depth, alpha, beta, isMaximizing) {
+    if (depth === 0) {
+      return this.evaluateBoard(board);
+    }
+
+    const currentTurn = isMaximizing ? 'b' : 'r';
+
+    // 收集所有合法走法
+    const moves = [];
+    for (let r = 0; r < 10; r++) {
+      for (let c = 0; c < 9; c++) {
+        const code = board[r][c];
+        if (code && PIECE_CONFIG[code].color === currentTurn) {
+          const legals = this.getLegalMoves(r, c, board);
+          for (const m of legals) {
+            moves.push({ fromR: r, fromC: c, toR: m.r, toC: m.c, target: board[m.r][m.c] });
+          }
+        }
+      }
+    }
+
+    if (moves.length === 0) {
+      // 无路可走：被将死或困毙
+      if (this.isKingInCheck(currentTurn, board)) {
+        return isMaximizing ? -25000 : 25000;
+      }
+      return 0; // 和棋
+    }
+
+    // 启发式走法排序 (Move Ordering: 优先搜吃大子与将军，成倍提升剪枝效率)
+    moves.sort((a, b) => {
+      const valA = a.target ? PIECE_CONFIG[a.target].val : 0;
+      const valB = b.target ? PIECE_CONFIG[b.target].val : 0;
+      return valB - valA;
+    });
+
+    if (isMaximizing) {
+      let maxEval = -Infinity;
+      for (const m of moves) {
+        const nextBoard = JSON.parse(JSON.stringify(board));
+        nextBoard[m.toR][m.toC] = nextBoard[m.fromR][m.fromC];
+        nextBoard[m.fromR][m.fromC] = null;
+
+        const evalScore = this.minimaxAlphaBeta(nextBoard, depth - 1, alpha, beta, false);
+        maxEval = Math.max(maxEval, evalScore);
+        alpha = Math.max(alpha, evalScore);
+        if (beta <= alpha) break; // Beta 剪枝
+      }
+      return maxEval;
+    } else {
+      let minEval = Infinity;
+      for (const m of moves) {
+        const nextBoard = JSON.parse(JSON.stringify(board));
+        nextBoard[m.toR][m.toC] = nextBoard[m.fromR][m.fromC];
+        nextBoard[m.fromR][m.fromC] = null;
+
+        const evalScore = this.minimaxAlphaBeta(nextBoard, depth - 1, alpha, beta, true);
+        minEval = Math.min(minEval, evalScore);
+        beta = Math.min(beta, evalScore);
+        if (beta <= alpha) break; // Alpha 剪枝
+      }
+      return minEval;
+    }
+  }
+
   makeAIMove() {
+    // 1. 尝试从多变开局库中随机选取精妙应招（前两回合绝不单调！）
+    const bookMove = this.tryOpeningBook();
+    if (bookMove) {
+      this.makeMove(bookMove.fromR, bookMove.fromC, bookMove.toR, bookMove.toC);
+      return;
+    }
+
+    // 2. 收集黑方所有当前合法走法
     const allMoves = [];
     for (let r = 0; r < 10; r++) {
       for (let c = 0; c < 9; c++) {
         const code = this.board[r][c];
         if (code && PIECE_CONFIG[code].color === 'b') {
           const legal = this.getLegalMoves(r, c, this.board);
-          legal.forEach(m => allMoves.push({ fromR: r, fromC: c, toR: m.r, toC: m.c }));
+          for (const m of legal) {
+            allMoves.push({
+              fromR: r,
+              fromC: c,
+              toR: m.r,
+              toC: m.c,
+              target: this.board[m.r][m.c]
+            });
+          }
         }
       }
     }
@@ -604,37 +842,54 @@ class XiangqiGame {
     let chosen = null;
 
     if (this.aiDifficulty === 'easy') {
-      // 优先吃子，否则随机
-      const capMoves = allMoves.filter(m => this.board[m.toR][m.toC]);
-      if (capMoves.length > 0 && Math.random() > 0.3) {
+      // 棋艺初学：优先吃子，35% 随机性
+      const capMoves = allMoves.filter(m => m.target);
+      if (capMoves.length > 0 && Math.random() > 0.4) {
         chosen = capMoves[Math.floor(Math.random() * capMoves.length)];
       } else {
         chosen = allMoves[Math.floor(Math.random() * allMoves.length)];
       }
     } else {
-      // 启发式搜索评估
+      // medium: depth 2; master: depth 3
+      const searchDepth = this.aiDifficulty === 'master' ? 3 : 2;
+
+      // 走法预排序 (优先评估吃子)
+      allMoves.sort((a, b) => {
+        const valA = a.target ? PIECE_CONFIG[a.target].val : 0;
+        const valB = b.target ? PIECE_CONFIG[b.target].val : 0;
+        return valB - valA;
+      });
+
       let bestScore = -Infinity;
+      const topMoves = [];
+
       for (const m of allMoves) {
-        const target = this.board[m.toR][m.toC];
-        let score = 0;
-        if (target) {
-          score += PIECE_CONFIG[target].val * 10;
-        }
-        // 向前进逼红方九宫奖励
-        if (m.toR > m.fromR) score += 20;
-        // 占领中路 (c = 4) 奖励
-        if (m.toC === 4) score += 35;
+        const nextBoard = JSON.parse(JSON.stringify(this.board));
+        nextBoard[m.toR][m.toC] = nextBoard[m.fromR][m.fromC];
+        nextBoard[m.fromR][m.fromC] = null;
 
-        score += Math.random() * 8; // 随机性避免僵化
+        // 执行 Alpha-Beta 搜索
+        const score = this.minimaxAlphaBeta(nextBoard, searchDepth - 1, -Infinity, Infinity, false);
 
-        if (score > bestScore) {
-          bestScore = score;
+        // 融入微小随机扰动 (0~10分)，在势均力敌的多条优良路线中随机切换，棋风灵活多变
+        const dynamicScore = score + (Math.random() * 10);
+
+        if (dynamicScore > bestScore) {
+          bestScore = dynamicScore;
           chosen = m;
         }
+
+        topMoves.push({ move: m, score: dynamicScore });
       }
-      if (!chosen) chosen = allMoves[0];
+
+      // 如果有评分非常接近的高分棋步（分差在 12 分以内），在最优阵列中随机挑一步，保持行棋灵动
+      const eliteMoves = topMoves.filter(tm => (bestScore - tm.score) < 12);
+      if (eliteMoves.length > 1) {
+        chosen = eliteMoves[Math.floor(Math.random() * eliteMoves.length)].move;
+      }
     }
 
+    if (!chosen) chosen = allMoves[0];
     this.makeMove(chosen.fromR, chosen.fromC, chosen.toR, chosen.toC);
   }
 
