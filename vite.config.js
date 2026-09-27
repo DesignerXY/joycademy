@@ -4,26 +4,34 @@ import react from '@vitejs/plugin-react';
 
 const rootDir = import.meta.dirname;
 
+const redirectMiddleware = (req, res, next) => {
+  const url = req.url ? req.url.split('?')[0] : '';
+  const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch', '/chess', '/xiangqi', '/weiqi'];
+  if (paths.includes(url)) {
+    res.writeHead(301, { Location: url + '/' });
+    return res.end();
+  }
+  next();
+};
+
 export default defineConfig({
   base: './',
   server: {
     port: 3000,
     open: true
   },
+  preview: {
+    port: 4174
+  },
   plugins: [
     react(),
     {
       name: 'trailing-slash-redirect',
       configureServer(server) {
-        server.middlewares.use((req, res, next) => {
-          const url = req.url ? req.url.split('?')[0] : '';
-          const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch', '/chess', '/xiangqi', '/weiqi'];
-          if (paths.includes(url)) {
-            res.writeHead(301, { Location: url + '/' });
-            return res.end();
-          }
-          next();
-        });
+        server.middlewares.use(redirectMiddleware);
+      },
+      configurePreviewServer(server) {
+        server.middlewares.use(redirectMiddleware);
       }
     }
   ],
