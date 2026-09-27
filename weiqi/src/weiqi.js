@@ -507,10 +507,9 @@ class WeiqiGame {
   }
 
   bindEvents() {
-    const { padding, step } = this.getLayoutMetrics();
-
     // 鼠标移动悬停
     this.canvas.addEventListener('mousemove', (e) => {
+      const { padding, step } = this.getLayoutMetrics();
       const rect = this.canvas.getBoundingClientRect();
       const scaleX = this.canvas.width / rect.width;
       const scaleY = this.canvas.height / rect.height;
@@ -540,6 +539,7 @@ class WeiqiGame {
 
     // 点击落子
     this.canvas.addEventListener('click', (e) => {
+      const { padding, step } = this.getLayoutMetrics();
       const rect = this.canvas.getBoundingClientRect();
       const scaleX = this.canvas.width / rect.width;
       const scaleY = this.canvas.height / rect.height;
