@@ -6,7 +6,7 @@ const rootDir = import.meta.dirname;
 
 const redirectMiddleware = (req, res, next) => {
   const url = req.url ? req.url.split('?')[0] : '';
-  const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch', '/chess', '/xiangqi', '/weiqi'];
+  const paths = ['/mario', '/minecraft', '/odyssey', '/kart', '/scratch', '/chess', '/xiangqi', '/weiqi', '/stock'];
   if (paths.includes(url)) {
     res.writeHead(301, { Location: url + '/' });
     return res.end();
@@ -49,7 +49,8 @@ export default defineConfig({
         odyssey: resolve(rootDir, 'odyssey/index.html'),
         kart: resolve(rootDir, 'kart/index.html'),
         mario: resolve(rootDir, 'mario/index.html'),
-        minecraft: resolve(rootDir, 'minecraft/index.html')
+        minecraft: resolve(rootDir, 'minecraft/index.html'),
+        stock: resolve(rootDir, 'stock/index.html')
       }
     }
   }

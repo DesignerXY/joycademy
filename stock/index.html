@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>童趣财商大冒险 · 模拟股票交易所 (Kid & Pro Stock Adventure)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) {
+      location.replace(location.pathname + '/' + location.search + location.hash);
+    }
+  </script>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="stock-container">
+    <!-- Top Action Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-icon">📈</div>
+        <div class="title-group">
+          <h1>童趣财商大冒险 · 模拟股票交易所</h1>
+          <p>看懂市场波动与增长 · 华尔街操盘手K线 & 儿童萌趣财商奇遇双视界</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="market-clock-badge">
+          <span class="clock-dot"></span>
+          <span id="market-status-text">开市中 · 09:30</span>
+          <span id="market-day-text" style="color: #94a3b8; margin-left: 4px;">Day 1</span>
+        </div>
+
+        <button id="btn-speed-toggle" class="ctrl-btn" title="调整市场演化速度">⚡ 速度: 1x</button>
+        <button id="btn-sound-toggle" class="ctrl-btn" title="开关声音与语音讲解">🔊 声音: 开启</button>
+        <button id="btn-mode-toggle" class="ctrl-btn active" title="切换大人操盘手 / 儿童萌趣模式">💼 视界: 双屏合璧</button>
+        <a href="../" class="ctrl-btn" title="返回少儿智趣中心主页">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <!-- Portfolio Asset Vault (我的财富金库) -->
+    <section class="portfolio-bar">
+      <!-- 1. Total Assets -->
+      <div class="asset-card">
+        <div class="asset-icon">🏦</div>
+        <div class="asset-meta">
+          <div class="asset-label">我的总资产净值</div>
+          <div class="asset-value" id="val-total-assets">￥100,000.00</div>
+          <div class="asset-sub" id="sub-total-change">初始本金 ￥100,000</div>
+        </div>
+        <button class="btn-topup" id="btn-add-funds" title="补充模拟投资金">+ 领 ￥5万</button>
+      </div>
+
+      <!-- 2. Available Cash -->
+      <div class="asset-card">
+        <div class="asset-icon">💵</div>
+        <div class="asset-meta">
+          <div class="asset-label">可用流动现金</div>
+          <div class="asset-value" id="val-cash">￥100,000.00</div>
+          <div class="asset-sub">可随时买入心仪股票</div>
+        </div>
+      </div>
+
+      <!-- 3. Stock Holding Value -->
+      <div class="asset-card">
+        <div class="asset-icon">📊</div>
+        <div class="asset-meta">
+          <div class="asset-label">持仓股票总市值</div>
+          <div class="asset-value" id="val-stock-market">￥0.00</div>
+          <div class="asset-sub" id="sub-holding-count">持有 0 只股票</div>
+        </div>
+      </div>
+
+      <!-- 4. Total P&L -->
+      <div class="asset-card">
+        <div class="asset-icon">🚀</div>
+        <div class="asset-meta">
+          <div class="asset-label">累计投资盈亏</div>
+          <div class="asset-value" id="val-profit">+￥0.00</div>
+          <div class="asset-sub" id="sub-profit-rate">收益率: +0.00%</div>
+        </div>
+      </div>
+
+      <!-- 5. Wisdom Rank Badge -->
+      <div class="asset-card">
+        <div class="asset-icon" id="wisdom-icon">🌱</div>
+        <div class="asset-meta">
+          <div class="asset-label">财商荣誉称号</div>
+          <div class="asset-value" id="wisdom-rank-name" style="font-size: 18px; color: #fde047;">理财小苗</div>
+          <div class="asset-sub" id="wisdom-rank-desc">完成首次买入即可升级！</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Trading Layout -->
+    <div class="main-layout">
+      <!-- Left Column: 6 Unique Stocks List & Selector -->
+      <aside class="stocks-sidebar">
+        <div class="sidebar-title">
+          <span>🌟 特色概念股票池 (6)</span>
+          <span style="font-size: 11px; color: #94a3b8;">自主探索与投资</span>
+        </div>
+        <div id="stock-list-container">
+          <!-- Dynamically populated by main.js -->
+        </div>
+      </aside>
+
+      <!-- Center Column: Visual Charts & Adults/Kids Dual Views -->
+      <main class="center-column">
+        <div class="chart-card">
+          <!-- Active Stock Header -->
+          <div class="chart-header">
+            <div class="active-stock-info">
+              <div class="active-stock-icon" id="chart-stock-icon">🍦</div>
+              <div class="active-stock-title">
+                <h2 id="chart-stock-name">甜心冰淇淋工厂 (600888)</h2>
+                <div class="tags-row" id="chart-stock-tags">
+                  <span class="mini-tag">消费白马</span>
+                  <span class="mini-tag">夏日明星</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-mode-tabs">
+              <button class="chart-tab-btn active" id="tab-chart-kline">📊 大人专业K线 (MA5/10/20)</button>
+              <button class="chart-tab-btn" id="tab-chart-rainbow">🌈 儿童萌趣彩虹线</button>
+            </div>
+          </div>
+
+          <!-- Canvas Chart -->
+          <div class="chart-canvas-wrapper">
+            <canvas id="stock-canvas"></canvas>
+          </div>
+
+          <!-- Kids Fun Mood Bar (Sunny, Rainbow, Storm) -->
+          <div class="kids-mood-bar" id="kids-mood-bar">
+            <div class="mood-bubble" id="mood-icon">☀️</div>
+            <div class="mood-text">
+              <h5 id="mood-title">天气晴朗 · 经营向好</h5>
+              <p id="mood-desc">“今天店里人手爆满，小朋友们都在排队买冰淇淋，大家对公司充满信心！”</p>
+            </div>
+          </div>
+
+          <!-- Adults Pro Financial Indicators & Order Book -->
+          <div id="adults-pro-container">
+            <div class="adult-pro-metrics-grid">
+              <div class="metric-pill">
+                <div class="lbl">市盈率 (P/E 动态)</div>
+                <div class="val" id="metric-pe">22.4 倍</div>
+              </div>
+              <div class="metric-pill">
+                <div class="lbl">市净率 (P/B)</div>
+                <div class="val" id="metric-pb">3.8 倍</div>
+              </div>
+              <div class="metric-pill">
+                <div class="lbl">总市值</div>
+                <div class="val" id="metric-market-cap">128.5 亿</div>
+              </div>
+              <div class="metric-pill">
+                <div class="lbl">今日振幅</div>
+                <div class="val" id="metric-amplitude">4.2%</div>
+              </div>
+              <div class="metric-pill">
+                <div class="lbl">机构评级</div>
+                <div class="val" style="color: #facc15;">⭐⭐⭐⭐⭐ 强烈买入</div>
+              </div>
+            </div>
+
+            <!-- Level 2 Order Book (买卖五档) -->
+            <div class="order-book-box">
+              <div class="order-book-title">
+                <span>盘口实时撮合挂单 (Level-2 五档买卖单)</span>
+                <span style="color: #64748b;">单位: 手 (100股)</span>
+              </div>
+              <div class="order-rows">
+                <div>
+                  <div class="order-side-title ask-color">卖盘 (委卖五档)</div>
+                  <div id="order-asks-list"></div>
+                </div>
+                <div>
+                  <div class="order-side-title bid-color">买盘 (委买五档)</div>
+                  <div id="order-bids-list"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Column: Interactive Trading Station (我输入文字投多少钱) -->
+      <aside class="trade-sidebar">
+        <div class="trade-panel-card">
+          <!-- Buy / Sell Mode Tabs -->
+          <div class="trade-tabs">
+            <button class="trade-tab active-buy" id="tab-trade-buy">🚀 买入股票 (建仓)</button>
+            <button class="trade-tab" id="tab-trade-sell">💰 卖出股票 (套现)</button>
+          </div>
+
+          <!-- Input Money Amount (输入文字投多少钱) -->
+          <div class="form-group" id="group-money-input">
+            <label class="form-label">
+              <span>💵 计划投入资金金额 (我输入文字投多少钱)</span>
+              <span id="label-max-invest" style="color: #94a3b8;">可用: ￥100,000</span>
+            </label>
+            <div class="text-input-wrap">
+              <input type="number" id="input-trade-money" placeholder="请输入投入金额，如 5000" min="1" step="100" value="10000">
+              <span class="input-suffix">元</span>
+            </div>
+
+            <!-- Quick Amount Preset Chips -->
+            <div class="quick-amount-chips">
+              <button class="chip-btn" data-amount="1000">￥1,000</button>
+              <button class="chip-btn" data-amount="5000">￥5,000</button>
+              <button class="chip-btn" data-amount="20000">￥20,000</button>
+              <button class="chip-btn" data-amount="half">半仓 50%</button>
+              <button class="chip-btn" data-amount="all" style="grid-column: span 4; background: rgba(239, 68, 68, 0.15); color: #f87171;">🔥 全部投入 (梭哈)</button>
+            </div>
+          </div>
+
+          <!-- Sell Portion Controls (Visible when Sell Mode active) -->
+          <div class="form-group hidden" id="group-sell-input">
+            <label class="form-label">
+              <span>📉 计划卖出比例</span>
+              <span id="label-holding-shares" style="color: #fde047;">持仓: 0 股</span>
+            </label>
+            <div class="quick-amount-chips">
+              <button class="chip-btn" data-sell-ratio="0.25">卖出 25%</button>
+              <button class="chip-btn" data-sell-ratio="0.5">卖出 半仓 (50%)</button>
+              <button class="chip-btn" data-sell-ratio="0.75">卖出 75%</button>
+              <button class="chip-btn" data-sell-ratio="1.0" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">全部获利了结</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Pre-calculation Preview -->
+          <div class="calc-preview-box" id="calc-preview-text">
+            正在计算实时撮合订单...
+          </div>
+
+          <!-- Execute Trade Button -->
+          <button class="btn-execute-trade buy-mode" id="btn-trade-submit">
+            <span>🚀 确认买入</span>
+          </button>
+        </div>
+
+        <!-- Current Stock Position Details (当前该股票持仓) -->
+        <div class="current-stock-holding-box">
+          <h4>📦 我在该股票的持仓明细</h4>
+          <div class="holding-detail-row">
+            <span>持有数量:</span>
+            <span class="val" id="hold-shares">0 股</span>
+          </div>
+          <div class="holding-detail-row">
+            <span>持仓市值:</span>
+            <span class="val" id="hold-value">￥0.00</span>
+          </div>
+          <div class="holding-detail-row">
+            <span>买入均价:</span>
+            <span class="val" id="hold-avg-cost">--</span>
+          </div>
+          <div class="holding-detail-row">
+            <span>当前浮动盈亏:</span>
+            <span class="val" id="hold-pnl" style="color: #cbd5e1;">￥0.00 (0.00%)</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Animated TV Video Broadcast Studio (突发新闻与波动原因视频大厅) -->
+    <section class="tv-studio-section" id="section-tv-studio">
+      <div class="tv-header-row">
+        <div class="tv-title-group">
+          <h3>📺 财商 TV · 市场波动原因视频演播室</h3>
+          <p>看懂市场波动的底层原因：黄金坑如何抄底？战争对黄金有哪些影响？夏日热浪怎样推高冰淇淋利润？</p>
+        </div>
+        <button class="btn-tv-action primary" id="btn-apply-event-to-market">⚡ 立即在股市中模拟推演此事件！</button>
+      </div>
+
+      <!-- Topics Carousel Tabs -->
+      <div class="tv-topics-carousel" id="tv-topics-bar">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Video Player Studio Frame -->
+      <div class="tv-player-container">
+        <!-- Left: Canvas Video Stage (Animated Anchor, Explanatory Motion Graphics, Danmaku) -->
+        <div class="tv-canvas-box">
+          <canvas id="tv-canvas"></canvas>
+        </div>
+
+        <!-- Right: Real-time Narration & Explanation Studio Card -->
+        <div class="tv-side-info-card">
+          <div class="tv-subtitles-content" id="tv-subtitles-box">
+            正在载入财商视频播报...
+          </div>
+
+          <div class="tv-controls-bar">
+            <button class="btn-tv-action" id="btn-tv-prev">⏮️ 上一讲</button>
+            <button class="btn-tv-action" id="btn-tv-play">⏸️ 暂停播报</button>
+            <button class="btn-tv-action" id="btn-tv-next">⏭️ 下一讲</button>
+            <button class="btn-tv-action" id="btn-tv-voice">🔊 语音朗读</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kids Autonomous Stock Explorer Lab (儿童专属自主探索六大概念股) -->
+    <section class="kids-explorer-section">
+      <div class="section-head-bar">
+        <div>
+          <h3>🔍 儿童自主探索实验室 · 认识不同股票的性格与秘密</h3>
+          <p style="font-size: 12px; color: #94a3b8;">每只股票都有不同的超能力和风险点，点击即可深入了解！</p>
+        </div>
+      </div>
+
+      <div class="explorer-cards-grid" id="explorer-cards-container">
+        <!-- Populated dynamically by main.js -->
+      </div>
+
+      <!-- Financial Wisdom Quiz Banner (答题赢本金) -->
+      <div class="quiz-banner">
+        <div class="quiz-info">
+          <h4>🏆 财商小侦探闯关答题 · 赢取 ￥10,000 投资模拟启动金！</h4>
+          <p id="quiz-question-text">题目：世界上突发地缘战争或动荡冲突时，哪种股票最可能因为资金避险而暴涨？</p>
+        </div>
+        <div id="quiz-options-box" style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <!-- Dynamically populated options -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

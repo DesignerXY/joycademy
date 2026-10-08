@@ -555,6 +555,60 @@
       transform: translateY(-2px);
     }
 
+    /* Stock Zone */
+    .stock-zone {
+      margin-bottom: 40px;
+    }
+    .stock-big-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(234, 179, 8, 0.45);
+      border-radius: 28px;
+      padding: 36px 36px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stock-big-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981, #6366f1);
+    }
+    .stock-big-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(245, 158, 11, 0.8);
+      box-shadow: 0 28px 60px rgba(245, 158, 11, 0.25);
+    }
+    .btn-launch-stock {
+      background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+      transition: all 0.2s ease;
+      margin-top: 18px;
+    }
+    .btn-launch-stock:hover {
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+      box-shadow: 0 10px 28px rgba(245, 158, 11, 0.6);
+      transform: translateY(-2px);
+    }
+
     /* Footer & Deployment Helper */
     footer.app-footer {
       margin-top: 60px;
@@ -739,6 +793,13 @@
           </div>
         </div>
         <div class="stat-pill">
+          <div class="stat-icon">📈</div>
+          <div class="stat-text">
+            <div class="stat-num">1 款模拟股市</div>
+            <div class="stat-desc">K线走势/黄金坑/儿童视频播报</div>
+          </div>
+        </div>
+        <div class="stat-pill">
           <div class="stat-icon">♟️</div>
           <div class="stat-text">
             <div class="stat-num">3 款博弈经典</div>
@@ -764,13 +825,74 @@
       <!-- Category Filter Tabs -->
       <div class="filter-tabs-wrapper">
         <div class="filter-tabs" role="tablist">
-          <button class="tab-btn active" data-filter="all">🌟 全部体验 (8)</button>
+          <button class="tab-btn active" data-filter="all">🌟 全部体验 (9)</button>
+          <button class="tab-btn" data-filter="stock">📈 财商实战 (1)</button>
           <button class="tab-btn" data-filter="learning">📚 智趣学堂 (1)</button>
           <button class="tab-btn" data-filter="board">♟️ 智慧棋苑 (3)</button>
           <button class="tab-btn" data-filter="arcade">🎮 经典街机 & 3D沙盒 (4)</button>
         </div>
       </div>
     </header>
+
+    <!-- Zone: Stock Market Adventure (童趣财商与股票大冒险) -->
+    <section class="stock-zone" id="zone-stock">
+      <div class="section-title-row">
+        <h3 class="section-heading">
+          <span>📈 模拟股市 · 市场波动与财商大冒险</span>
+        </h3>
+        <span class="section-badge-count" style="background: rgba(234, 179, 8, 0.2); color: #fde047; border: 1px solid rgba(234, 179, 8, 0.4);">重磅上新 · 华尔街&儿童双视界</span>
+      </div>
+
+      <div class="stock-big-card">
+        <div class="big-card-main">
+          <span class="big-card-tag" style="background: rgba(234, 179, 8, 0.2); border-color: rgba(234, 179, 8, 0.4); color: #fde047;">🌟 深度经济推演 · 财商启蒙与实战实操</span>
+          <h2 class="big-card-title">
+            <span>童趣财商大冒险：模拟股票交易所</span>
+          </h2>
+          <p class="big-card-desc">
+            支持<strong>自主输入资金任意买入卖出</strong>，动态追踪个人财富净值与收益率！完美结合<strong>大人专业视界（实时K线蜡烛图、MA均线、五档盘口、市盈率市净率）</strong>与<strong>儿童萌趣视界（彩虹发光线、6只性格各异的卡通概念股票、公司故事百科）</strong>。内置<strong>财商TV视频演播室</strong>与动画小牛主播，深度视频讲解<strong>“黄金坑”抄底、“战争风云”避险、夏日热浪供求关系与科技突破</strong>！
+          </p>
+
+          <div class="learning-chips">
+            <span class="chip-item">💰 输入文字自由买入卖出</span>
+            <span class="chip-item">📊 大人专业蜡烛K线与五档盘口</span>
+            <span class="chip-item">📺 财商TV演播室视频动态播报</span>
+            <span class="chip-item">✨ “黄金坑”深度抄底教学</span>
+            <span class="chip-item">⚔️ 地缘战争与恐龙黄金避险</span>
+            <span class="chip-item">🔍 6大特色股票儿童自主探索</span>
+          </div>
+
+          <a href="./stock/" class="btn-launch-stock">
+            <span>📈 立即进入模拟股票交易所</span>
+            <span>➔</span>
+          </a>
+        </div>
+
+        <div class="big-card-side">
+          <div class="side-feature-item">
+            <div class="side-feature-icon">✨</div>
+            <div class="side-feature-info">
+              <h4>【黄金坑与周期】看懂市场波动</h4>
+              <p>好股票遭遇非理性恐慌错杀，砸出深V黄金坑！看懂底层原因，学会勇敢低吸！</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">🎙️</div>
+            <div class="side-feature-info">
+              <h4>【视频播报与语音】卡通主播生动讲</h4>
+              <p>动态演播室大屏、卡通主播配音与实时弹幕，把深奥的金融概念变成看得懂的动画！</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">🌱</div>
+            <div class="side-feature-info">
+              <h4>【财商勋章】从理财小苗到巴菲特</h4>
+              <p>初始提供 ￥100,000 投资金，完成答题或翻倍投资即可晋升荣誉财商徽章！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Zone 1: Learning Academy (智趣学堂) -->
     <section class="featured-zone" id="zone-learning">
@@ -1031,6 +1153,7 @@
   <script>
     // 1. 分类筛选交互
     const filterTabs = document.querySelectorAll('.tab-btn');
+    const zoneStock = document.getElementById('zone-stock');
     const zoneLearning = document.getElementById('zone-learning');
     const zoneBoard = document.getElementById('zone-board');
     const zoneArcade = document.getElementById('zone-arcade');
@@ -1042,18 +1165,27 @@
 
         const filter = tab.getAttribute('data-filter');
         if (filter === 'all') {
+          if (zoneStock) zoneStock.style.display = 'block';
           zoneLearning.style.display = 'block';
           zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'block';
+        } else if (filter === 'stock') {
+          if (zoneStock) zoneStock.style.display = 'block';
+          zoneLearning.style.display = 'none';
+          zoneBoard.style.display = 'none';
+          zoneArcade.style.display = 'none';
         } else if (filter === 'learning') {
+          if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'block';
           zoneBoard.style.display = 'none';
           zoneArcade.style.display = 'none';
         } else if (filter === 'board') {
+          if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'none';
           zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'none';
         } else if (filter === 'arcade') {
+          if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'none';
           zoneBoard.style.display = 'none';
           zoneArcade.style.display = 'block';
