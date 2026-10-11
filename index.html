@@ -609,6 +609,60 @@
       transform: translateY(-2px);
     }
 
+    /* Fish Zone */
+    .fish-zone {
+      margin-bottom: 40px;
+    }
+    .fish-big-card {
+      background: linear-gradient(135deg, rgba(8, 51, 68, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(6, 182, 212, 0.45);
+      border-radius: 28px;
+      padding: 36px 36px 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 32px;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .fish-big-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #ff4d4f, #06b6d4, #10b981, #ec4899);
+    }
+    .fish-big-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 28px 60px rgba(6, 182, 212, 0.3);
+    }
+    .btn-launch-fish {
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+      transition: all 0.2s ease;
+      margin-top: 18px;
+    }
+    .btn-launch-fish:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      box-shadow: 0 10px 28px rgba(6, 182, 212, 0.6);
+      transform: translateY(-2px);
+    }
+
     /* Footer & Deployment Helper */
     footer.app-footer {
       margin-top: 60px;
@@ -814,6 +868,13 @@
           </div>
         </div>
         <div class="stat-pill">
+          <div class="stat-icon">🐠</div>
+          <div class="stat-text">
+            <div class="stat-num">1 款奇趣鱼鱼</div>
+            <div class="stat-desc">兰寿水族馆/水母工坊/拼豆/电视</div>
+          </div>
+        </div>
+        <div class="stat-pill">
           <div class="stat-icon">🚀</div>
           <div class="stat-text">
             <div class="stat-num">100% 纯前端</div>
@@ -825,7 +886,8 @@
       <!-- Category Filter Tabs -->
       <div class="filter-tabs-wrapper">
         <div class="filter-tabs" role="tablist">
-          <button class="tab-btn active" data-filter="all">🌟 全部体验 (9)</button>
+          <button class="tab-btn active" data-filter="all">🌟 全部体验 (10)</button>
+          <button class="tab-btn" data-filter="fish">🐠 萌宠水族 (1)</button>
           <button class="tab-btn" data-filter="stock">📈 财商实战 (1)</button>
           <button class="tab-btn" data-filter="learning">📚 智趣学堂 (1)</button>
           <button class="tab-btn" data-filter="board">♟️ 智慧棋苑 (3)</button>
@@ -888,6 +950,66 @@
             <div class="side-feature-info">
               <h4>【财商勋章】从理财小苗到巴菲特</h4>
               <p>初始提供 ￥100,000 投资金，完成答题或翻倍投资即可晋升荣誉财商徽章！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zone: Fish World Adventure (鱼鱼大冒险 · 兰寿水族馆与奇趣工坊) -->
+    <section class="fish-zone" id="zone-fish">
+      <div class="section-title-row">
+        <h3 class="section-heading">
+          <span>🐠 鱼鱼大冒险 · 兰寿水族馆与奇趣工坊</span>
+        </h3>
+        <span class="section-badge-count" style="background: rgba(6, 182, 212, 0.2); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.4);">重磅首发 · 5大萌宠鱼模式</span>
+      </div>
+
+      <div class="fish-big-card">
+        <div class="big-card-main">
+          <span class="big-card-tag" style="background: rgba(6, 182, 212, 0.2); border-color: rgba(6, 182, 212, 0.4); color: #38bdf8;">🌟 治愈系深海大世界 · 兰寿金鱼与水母魔法</span>
+          <h2 class="big-card-title">
+            <span>鱼鱼大冒险：兰寿水族馆 & 奇趣工坊</span>
+          </h2>
+          <p class="big-card-desc">
+            以憨态可掬的<strong>红白肉瘤兰寿金鱼</strong>为主角，出生自由挑选<strong>兰寿、三色锦鲤、透红小丑鱼、月光神仙鱼与发光小水母</strong>，在水族大世界中自由畅游与抚摸冒爱心！化身<strong>水母大厨熬制水晶发光布丁与啵啵茶</strong>喂养宠物鱼；打开<strong>鱼鱼小电视点击新闻播放萌趣动画片</strong>；更有<strong>“抓住捣蛋鱼”敏捷大挑战</strong>与<strong>“鱼鱼拼豆电熨斗魔法工坊”</strong>！
+          </p>
+
+          <div class="learning-chips">
+            <span class="chip-item">🦁 主角肉瘤兰寿自由游动</span>
+            <span class="chip-item">🍮 水母魔法厨房做水晶布丁</span>
+            <span class="chip-item">📺 鱼鱼电视台点击看动画片</span>
+            <span class="chip-item">🎯 抓住偷吃捣蛋鱼敏捷闯关</span>
+            <span class="chip-item">🎨 16×16 发光拼豆魔法熨烫</span>
+            <span class="chip-item">💖 饱食度开心度陪伴成长</span>
+          </div>
+
+          <a href="./fish/" class="btn-launch-fish">
+            <span>🐠 立即开启鱼鱼大冒险</span>
+            <span>➔</span>
+          </a>
+        </div>
+
+        <div class="big-card-side">
+          <div class="side-feature-item">
+            <div class="side-feature-icon">🦁</div>
+            <div class="side-feature-info">
+              <h4>【肉瘤兰寿与群鱼】拟真水下物理</h4>
+              <p>摆尾、游动惯性、吐泡泡与水流推力，点击任意鱼鱼即可爱心互动与翻滚！</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">🪼</div>
+            <div class="side-feature-info">
+              <h4>【水母奇幻厨房】特调美味投喂</h4>
+              <p>收集深海胶质、珊瑚蜜糖与珍珠，做成晶莹布丁投喂水族箱，陪伴宠物鱼升级！</p>
+            </div>
+          </div>
+          <div class="side-feature-item">
+            <div class="side-feature-icon">📺</div>
+            <div class="side-feature-info">
+              <h4>【鱼鱼小电视 & 拼豆】多元欢乐体验</h4>
+              <p>点播兰寿选美夺冠动画短片，亲手拼插兰寿像素拼豆并用电熨斗定型收藏！</p>
             </div>
           </div>
         </div>
@@ -1153,6 +1275,7 @@
   <script>
     // 1. 分类筛选交互
     const filterTabs = document.querySelectorAll('.tab-btn');
+    const zoneFish = document.getElementById('zone-fish');
     const zoneStock = document.getElementById('zone-stock');
     const zoneLearning = document.getElementById('zone-learning');
     const zoneBoard = document.getElementById('zone-board');
@@ -1165,26 +1288,37 @@
 
         const filter = tab.getAttribute('data-filter');
         if (filter === 'all') {
+          if (zoneFish) zoneFish.style.display = 'block';
           if (zoneStock) zoneStock.style.display = 'block';
           zoneLearning.style.display = 'block';
           zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'block';
+        } else if (filter === 'fish') {
+          if (zoneFish) zoneFish.style.display = 'block';
+          if (zoneStock) zoneStock.style.display = 'none';
+          zoneLearning.style.display = 'none';
+          zoneBoard.style.display = 'none';
+          zoneArcade.style.display = 'none';
         } else if (filter === 'stock') {
+          if (zoneFish) zoneFish.style.display = 'none';
           if (zoneStock) zoneStock.style.display = 'block';
           zoneLearning.style.display = 'none';
           zoneBoard.style.display = 'none';
           zoneArcade.style.display = 'none';
         } else if (filter === 'learning') {
+          if (zoneFish) zoneFish.style.display = 'none';
           if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'block';
           zoneBoard.style.display = 'none';
           zoneArcade.style.display = 'none';
         } else if (filter === 'board') {
+          if (zoneFish) zoneFish.style.display = 'none';
           if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'none';
           zoneBoard.style.display = 'block';
           zoneArcade.style.display = 'none';
         } else if (filter === 'arcade') {
+          if (zoneFish) zoneFish.style.display = 'none';
           if (zoneStock) zoneStock.style.display = 'none';
           zoneLearning.style.display = 'none';
           zoneBoard.style.display = 'none';

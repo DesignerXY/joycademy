@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>鱼鱼大冒险 · 兰寿水族馆与奇趣工坊 (Fish Adventure & Ranchu Aquarium)</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    if (!location.pathname.endsWith('/') && !location.pathname.endsWith('.html')) {
+      location.replace(location.pathname + '/' + location.search + location.hash);
+    }
+  </script>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div class="fish-app-container">
+    <!-- Top Action Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-icon">🐠</div>
+        <div class="title-group">
+          <h1>鱼鱼大冒险 · 兰寿水族馆与奇趣工坊</h1>
+          <p>主角萌宠兰寿 · 自主选鱼漫游 · 水母神奇料理 · 鱼鱼动画小电视 · 抓住捣蛋鱼 & 拼豆工坊</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <button id="btn-sound-toggle" class="ctrl-btn" title="开关音效与语音解说">🔊 声音: 开启</button>
+        <a href="../" class="ctrl-btn" title="返回少儿智趣中心主页">🏠 返回大厅</a>
+      </div>
+    </header>
+
+    <!-- Mode Navigation Tabs -->
+    <nav class="modes-nav-bar">
+      <button class="mode-nav-btn active" data-mode="aquarium">🌊 兰寿水族漫游</button>
+      <button class="mode-nav-btn" data-mode="kitchen">🍳 水母料理工坊</button>
+      <button class="mode-nav-btn" data-mode="tv">📺 鱼鱼动画小电视</button>
+      <button class="mode-nav-btn" data-mode="mischief">🎯 抓住捣蛋鱼</button>
+      <button class="mode-nav-btn" data-mode="beads">🎨 鱼鱼拼豆工坊</button>
+    </nav>
+
+    <!-- Pet Status HUD Bar -->
+    <section class="pet-hud-bar">
+      <div class="hud-card">
+        <div class="hud-icon">⭐</div>
+        <div class="hud-meta">
+          <div class="hud-label">宠物鱼成长等级</div>
+          <div class="hud-value" id="hud-val-level">Lv.1 幼鱼</div>
+        </div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-icon">🦐</div>
+        <div class="hud-meta">
+          <div class="hud-label">饱食度</div>
+          <div class="hud-value" id="hud-val-hunger">80%</div>
+          <div class="hud-progress-bar">
+            <div class="hud-progress-fill" id="hud-fill-hunger" style="width: 80%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-icon">💖</div>
+        <div class="hud-meta">
+          <div class="hud-label">开心度</div>
+          <div class="hud-value" id="hud-val-happy">85%</div>
+          <div class="hud-progress-bar">
+            <div class="hud-progress-fill" id="hud-fill-happy" style="width: 85%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-card">
+        <div class="hud-icon">✨</div>
+        <div class="hud-meta">
+          <div class="hud-label">爱心亲密度</div>
+          <div class="hud-value" id="hud-val-affection" style="color: #fde047;">20 颗</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 1: Aquarium & Pet Care (兰寿水族馆漫游) -->
+    <!-- ======================================================== -->
+    <section class="aquarium-main-grid" id="sec-aquarium">
+      <!-- Left: Species Switcher -->
+      <aside class="sidebar-panel">
+        <div class="sidebar-title">
+          <span>🐟 出生选择 / 鱼鱼变身图鉴</span>
+        </div>
+        <div class="species-select-list" id="species-select-list">
+          <!-- Populated by main.js -->
+        </div>
+      </aside>
+
+      <!-- Right: Main Aquarium Canvas -->
+      <main class="aquarium-canvas-box">
+        <canvas id="aquarium-canvas"></canvas>
+
+        <div class="aquarium-floating-controls">
+          <div class="feed-buttons-group">
+            <button class="btn-feed-action" id="btn-feed-pellet">🦐 投喂营养小虾</button>
+            <button class="btn-feed-action" id="btn-feed-pudding">🍮 投喂水晶水母布丁</button>
+            <button class="btn-feed-action" id="btn-feed-boba">🧋 投喂水母啵啵</button>
+          </div>
+          <div class="aquarium-key-hints">
+            ⌨️ 键盘 WASD 或鼠标点击拖拽控制小鱼游动 | 🖱️ 点击鱼鱼抚摸冒爱心！
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 2: Jellyfish Food Workshop (水母魔法料理厨房) -->
+    <!-- ======================================================== -->
+    <section class="kitchen-section-wrap" id="sec-kitchen" style="display: none;">
+      <!-- Inventory & Gathering -->
+      <div class="kitchen-card">
+        <div class="sidebar-title">
+          <span>🪼 水母大厨的深海食材库</span>
+        </div>
+        <div class="inventory-grid" id="kitchen-inv-grid">
+          <!-- Populated by main.js -->
+        </div>
+        <button class="btn-game-action" id="btn-gather-ingredients" style="width: 100%;">
+          🌊 出海采集新食材 (捡海苔/珍珠)
+        </button>
+        <div style="margin-top: 16px; font-size: 12px; color: #94a3b8; line-height: 1.5;">
+          💡 水母拥有神奇的烹饪天赋！用收集到的发光胶质、珊瑚蜜糖等材料，做出的美味不仅能让兰寿大快朵颐，还能直接在水族箱中喂养它快速成长！
+        </div>
+      </div>
+
+      <!-- Recipes -->
+      <div class="kitchen-card">
+        <div class="sidebar-title">
+          <span>📖 水母秘制美味菜谱</span>
+        </div>
+        <div class="recipes-list" id="kitchen-recipes-list">
+          <!-- Populated by main.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 3: Fish TV (鱼鱼动画小电视) -->
+    <!-- ======================================================== -->
+    <section class="fish-tv-wrapper" id="sec-tv" style="display: none;">
+      <div class="sidebar-title" style="margin-bottom: 16px;">
+        <span>📺 鱼鱼电视台 · 点击小新闻看专属动画片</span>
+      </div>
+
+      <div class="tv-container-grid">
+        <!-- Canvas Stage -->
+        <div class="tv-stage-box">
+          <canvas id="fish-tv-canvas"></canvas>
+        </div>
+
+        <!-- Right Side: Channel List & Controls -->
+        <div>
+          <div class="tv-channels-sidebar" id="tv-channels-list">
+            <!-- Populated by main.js -->
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid var(--surface-border); border-radius: 14px; padding: 14px; margin-top: 14px;">
+            <div id="fish-tv-subtitles" style="font-size: 13px; color: #f1f5f9; min-height: 60px; line-height: 1.5;">
+              载入鱼鱼动画中...
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+              <button class="ctrl-btn" id="btn-tv-prev">⏮️ 上一集</button>
+              <button class="ctrl-btn" id="btn-tv-play">⏸️ 暂停动画</button>
+              <button class="ctrl-btn" id="btn-tv-next">⏭️ 下一集</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 4: Catch Mischievous Fish (抓住捣蛋鱼) -->
+    <!-- ======================================================== -->
+    <section id="sec-mischief" style="display: none;">
+      <div id="mischief-game-container">
+        <!-- Populated by mischief.js -->
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- SECTION 5: Fish Perler Beads Studio (鱼鱼拼豆工坊) -->
+    <!-- ======================================================== -->
+    <section id="sec-beads" style="display: none;">
+      <div id="beads-studio-container">
+        <!-- Populated by beads.js -->
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
